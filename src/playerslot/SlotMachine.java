@@ -65,7 +65,9 @@ public class SlotMachine {
         if (white.count + slot[4] <= 4)
             white.count += slot[4];
 
+    }
 
-
+    public void setslotText( JButton button){
+        button.setText(this.count + "/4");
     }
 }

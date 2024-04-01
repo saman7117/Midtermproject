@@ -1,5 +1,6 @@
 package cardcoin;
 import playerslot.Player;
+import playerslot.SlotMachine;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,7 +14,8 @@ import static playerslot.Player.setplayertext;
 
 public class Card {
     public int[] price;
-    boolean [][] visitlabel;
+    public static boolean [][] visitlabel;
+    public static int [][] currentcards;
     public String [] colors;
 
     public int level;
@@ -92,6 +94,7 @@ public class Card {
         }
         colors = new String[3];
         visitlabel = new boolean[4][4];
+        currentcards = new int[4][4];
         int min;
         int max;
         int range;
@@ -103,63 +106,193 @@ public class Card {
         if (level == 1) {
             rand = random.nextInt(2);
             setPoint(rand);
-            for (int i = 0; i < 2; i++) {
-                int j = house.nextInt(5);
-                if (j == 0){
-                    this.colors[i] = "green";}
-                else if (j == 1) {
+                int numbers[];
+                numbers = new int[2];
+                int houses[] = new int[2];
+            min = 1;
+            max = 3;
+            range = max - min + 1;
+                numbers[0] = (int) (Math.random() * range) + min;
+                if (numbers[0] == 1)
+                numbers[1] = 3;
+                else{
+                    min = 2;
+                    max = 3;
+                    range = max - min + 1;
+                    numbers[1] = (int) (Math.random() * range) + min;
+                }
+
+                houses[0] = house.nextInt(4);
+
+                if (houses[0] == 0){
+                    this.colors[0] = "green";}
+                else if (houses[0] == 1) {
+                    this.colors[0] = "red";
+                } else if (houses[0] == 2) {
+                    this.colors[0] = "blue";
+                } else if (houses[0] == 3) {
+                    this.colors[0] = "black";
+                } else if (houses[0] == 4) {
+                    this.colors[0] = "white";
+                }
+            for (int i = 1; i < 2; i++) {
+
+                houses[i] = house.nextInt(5);
+                if (houses[i] <= houses[0]){
+                    i--;
+                    continue;
+                }
+
+                if (houses[i] == 0) {
+                    this.colors[i] = "green";
+                } else if (houses[i] == 1) {
                     this.colors[i] = "red";
-                } else if (j == 2) {
+                } else if (houses[i] == 2) {
                     this.colors[i] = "blue";
-                } else if (j == 3) {
+                } else if (houses[i] == 3) {
                     this.colors[i] = "black";
-                } else if (j == 4) {
+                } else if (houses[i] == 4) {
                     this.colors[i] = "white";
                 }
-                this.price[j] = random.nextInt(2, 3);
             }
+
+            this.price[houses[0]] = numbers[0];
+            this.price[houses[1]] = numbers[1];
+
         } else if (level == 2) {
             min = 2;
             max = 4;
             range = max - min + 1;
             rand = (int) (Math.random() * range) + min;
             setPoint(rand);
-            for (int i = 0; i < 2; i++) {
-                int j = house.nextInt(5);
-                if (j == 0){
-                this.colors[i] = "green";}
-                else if (j == 1) {
+            int numbers[];
+            numbers = new int[2];
+            int houses[] = new int[2];
+            min = 3;
+            max = 4;
+            range = max - min + 1;
+            numbers[0] = (int) (Math.random() * range) + min;
+
+                min = 3;
+                max = 4;
+                range = max - min + 1;
+                numbers[1] = (int) (Math.random() * range) + min;
+
+            houses[0] = house.nextInt(4);
+
+            if (houses[0] == 0){
+                this.colors[0] = "green";}
+            else if (houses[0] == 1) {
+                this.colors[0] = "red";
+            } else if (houses[0] == 2) {
+                this.colors[0] = "blue";
+            } else if (houses[0] == 3) {
+                this.colors[0] = "black";
+            } else if (houses[0] == 4) {
+                this.colors[0] = "white";
+            }
+            for (int i = 1; i < 2; i++) {
+
+                houses[i] = house.nextInt(5);
+                if (houses[i] <= houses[0]){
+                    i--;
+                    continue;
+                }
+
+                if (houses[i] == 0) {
+                    this.colors[i] = "green";
+                } else if (houses[i] == 1) {
                     this.colors[i] = "red";
-                } else if (j == 2) {
+                } else if (houses[i] == 2) {
                     this.colors[i] = "blue";
-                } else if (j == 3) {
+                } else if (houses[i] == 3) {
                     this.colors[i] = "black";
-                } else if (j == 4) {
+                } else if (houses[i] == 4) {
                     this.colors[i] = "white";
                 }
-                this.price[j] = random.nextInt(3, 4);
             }
+            this.price[houses[0]] = numbers[0];
+            this.price[houses[1]] = numbers[1];
+
         } else if (level == 3) {
             min = 3;
             max = 5;
             range = max - min + 1;
             rand = (int) (Math.random() * range) + min;
             setPoint(rand);
-            for (int i = 0; i < 2; i++) {
-                int j = house.nextInt(5);
-                if (j == 0){
-                    this.colors[i] = "green";}
-                else if (j == 1) {
+            int numbers[];
+            numbers = new int[3];
+            int houses[] = new int[3];
+            min = 1;
+            max = 2;
+            range = max - min + 1;
+            numbers[0] = (int) (Math.random() * range) + min;
+
+                min = 2;
+                max = 3;
+                range = max - min + 1;
+                numbers[1] = (int) (Math.random() * range) + min;
+
+            min = 3;
+            max = 5;
+            range = max - min + 1;
+            numbers[2] = (int) (Math.random() * range) + min;
+
+            houses[0] = house.nextInt(3);
+
+            if (houses[0] == 0){
+                this.colors[0] = "green";}
+            else if (houses[0] == 1) {
+                this.colors[0] = "red";
+            } else if (houses[0] == 2) {
+                this.colors[0] = "blue";
+            }
+            for (int i = 1; i < 2; i++) {
+
+                houses[i] = house.nextInt(4);
+                if (houses[i] <= houses[0]){
+                    i--;
+                    continue;
+                }
+
+                if (houses[i] == 0) {
+                    this.colors[i] = "green";
+                } else if (houses[i] == 1) {
                     this.colors[i] = "red";
-                } else if (j == 2) {
+                } else if (houses[i] == 2) {
                     this.colors[i] = "blue";
-                } else if (j == 3) {
+                } else if (houses[i] == 3) {
                     this.colors[i] = "black";
-                } else if (j == 4) {
+                }
+            }
+
+            for (int i = 2; i < 3; i++) {
+
+                houses[i] = house.nextInt(5);
+                if (houses[i] <= houses[0] || houses[i] <= houses[1]){
+                    i--;
+                    continue;
+                }
+
+                if (houses[i] == 0) {
+                    this.colors[i] = "green";
+                } else if (houses[i] == 1) {
+                    this.colors[i] = "red";
+                } else if (houses[i] == 2) {
+                    this.colors[i] = "blue";
+                } else if (houses[i] == 3) {
+                    this.colors[i] = "black";
+                }else if (houses[i] == 3) {
+                    this.colors[i] = "black";
+                } else if (houses[i] == 4) {
                     this.colors[i] = "white";
                 }
-                this.price[j] = random.nextInt(2) + 3;
             }
+
+            this.price[houses[0]] = numbers[0];
+            this.price[houses[1]] = numbers[1];
+            this.price[houses[2]] = numbers[2];
+
         } else if (level == 0) {
             min = 3;
             max = 4;
@@ -167,21 +300,52 @@ public class Card {
             rand = (int) (Math.random() * range) + min;
             setPoint(rand);
 
-            for (int i = 0; i < 2; i++) {
-                int j = house.nextInt(5);
-                if (j == 0){
-                    this.colors[i] = "green";}
-                else if (j == 1) {
+            int numbers[];
+            numbers = new int[2];
+            int houses[] = new int[2];
+            min = 4;
+            max = 6;
+            range = max - min + 1;
+            numbers[0] = (int) (Math.random() * range) + min;
+
+            numbers[1] = (int) (Math.random() * range) + min;
+
+            houses[0] = house.nextInt(4);
+
+            if (houses[0] == 0){
+                this.colors[0] = "green";}
+            else if (houses[0] == 1) {
+                this.colors[0] = "red";
+            } else if (houses[0] == 2) {
+                this.colors[0] = "blue";
+            } else if (houses[0] == 3) {
+                this.colors[0] = "black";
+            } else if (houses[0] == 4) {
+                this.colors[0] = "white";
+            }
+            for (int i = 1; i < 2; i++) {
+
+                houses[i] = house.nextInt(5);
+                if (houses[i] <= houses[0]){
+                    i--;
+                    continue;
+                }
+
+                if (houses[i] == 0) {
+                    this.colors[i] = "green";
+                } else if (houses[i] == 1) {
                     this.colors[i] = "red";
-                } else if (j == 2) {
+                } else if (houses[i] == 2) {
                     this.colors[i] = "blue";
-                } else if (j == 3) {
+                } else if (houses[i] == 3) {
                     this.colors[i] = "black";
-                } else if (j == 4) {
+                } else if (houses[i] == 4) {
                     this.colors[i] = "white";
                 }
-                this.price[j] = random.nextInt(4, 6); // Generate random number between 4 and 6
             }
+            this.price[houses[0]] = numbers[0];
+            this.price[houses[1]] = numbers[1];
+
         }
     }
 
@@ -215,47 +379,49 @@ public class Card {
             }
 
             if (currentLabel != null) {
-                currentLabel.setText("<html>" + String.valueOf(point) + "<br>" + color1 + " = " + price1 + "             " + color2 + " = " + price2 + "</html>");
+                currentLabel.setText("<html>" + point + "<br>" + color1 + " = " + price1 + "             " + color2 + " = " + price2 + "</html>");
                 currentLabel.setHorizontalTextPosition(SwingConstants.CENTER);
                 currentLabel.setVerticalTextPosition(SwingConstants.TOP);
                 currentLabel.setForeground(Color.black);
                 currentLabel.setFont(new Font("tahome", Font.PLAIN, 14));
                 currentLabel.setIconTextGap(5);
-
+                currentcards [0][index] = index;
                 visitlabel[0][index] = true;
             }
         }
     }
-    public void setCardlevel1Location(int index, int point, String color , String color1 , String color2 , int price1 , int price2) {
-        if (!visitlabel[1][index]) {
-            JLabel currentLabel = null;
-            switch (index) {
-                case 0:
-                    currentLabel = lev1card1;
-                    break;
-                case 1:
-                    currentLabel = lev1card2;
-                    break;
-                case 2:
-                    currentLabel = lev1card3;
-                    break;
-                case 3:
-                    currentLabel = lev1card4;
-                    break;
-            }
+    public void setCardlevel1Location(int index , int point, String color, String color1, String color2, int price1, int price2) {
+            if (!visitlabel[1][index]) {
+                JLabel currentLabel = null;
+                switch (index) {
+                    case 0:
+                        currentLabel = lev1card1;
+                        visitlabel[1][index] = true;
+                        break;
+                    case 1:
+                        currentLabel = lev1card2;
+                        visitlabel[1][index] = true;
+                        break;
+                    case 2:
+                        currentLabel = lev1card3;
+                        visitlabel[1][index] = true;
+                        break;
+                    case 3:
+                        currentLabel = lev1card4;
+                        visitlabel[1][index] = true;
+                        break;
+                }
 
-            if (currentLabel != null) {
-                currentLabel.setText("<html>" + point + "      " + color + "<br>" + color1 + " = " + price1 + "        " + color2 + " = " + price2 + "</html>");
-                currentLabel.setHorizontalTextPosition(SwingConstants.CENTER);
-                currentLabel.setVerticalTextPosition(SwingConstants.TOP);
-                currentLabel.setForeground(Color.black);
-                currentLabel.setFont(new Font("tahome", Font.PLAIN, 14));
-                currentLabel.setIconTextGap(5);
 
-                visitlabel[1][index] = true;
+                if (currentLabel != null) {
+                set1and2cardText(point , color , color1 , price1 , color2 , price2 , currentLabel);
+                    currentcards [1][index] = index;
+                    visitlabel[1][index] = true;
+
+                }
             }
         }
-    }
+
 
     public void setCardlevel2Location(int index, int point, String color , String color1 , String color2 , int price1 , int price2) {
         if (!visitlabel[2][index]) {
@@ -276,46 +442,85 @@ public class Card {
             }
 
             if (currentLabel != null) {
-                currentLabel.setText("<html>" + point + "      " + color + "<br>" + color1 + " = " + price1 + "             " + color2 + " = " + price2 + "</html>");
-                currentLabel.setHorizontalTextPosition(SwingConstants.CENTER);
-                currentLabel.setVerticalTextPosition(SwingConstants.TOP);
-                currentLabel.setForeground(Color.black);
-                currentLabel.setFont(new Font("tahome", Font.PLAIN, 14));
-                currentLabel.setIconTextGap(5);
-
+                set1and2cardText(point , color , color1 , price1 , color2 , price2 , currentLabel);
+                currentcards [2][index] = index;
                 visitlabel[2][index] = true;
             }
         }
     }
 
-    public void setCardlevel3Location(int index, int point, String color , String color1 , String color2 , int price1 , int price2) {
-        if (!visitlabel[3][index]) {
-            JLabel currentLabel = null;
-            switch (index) {
-                case 0:
-                    currentLabel = lev3card1;
-                    break;
-                case 1:
-                    currentLabel = lev3card2;
-                    break;
-                case 2:
-                    currentLabel = lev3card3;
-                    break;
-                case 3:
-                    currentLabel = lev3card4;
-                    break;
+    public void setCardlevel3Location(int index , int point, String color , String color1 , String color2 , String color3, int price1 , int price2 , int price3) {
+
+            if (!visitlabel[3][index]) {
+                JLabel currentLabel = null;
+                switch (index) {
+                    case 0:
+                        currentLabel = lev3card1;
+                        break;
+                    case 1:
+                        currentLabel = lev3card2;
+                        break;
+                    case 2:
+                        currentLabel = lev3card3;
+                        break;
+                    case 3:
+                        currentLabel = lev3card4;
+                        break;
+                }
+
+                if (currentLabel != null) {
+                    currentLabel.setText("<html>" + point + "  " + color + "<br>" + color1 + " = " + price1 + "    " + color2 + " = " + price2 + color3 + " = " + price3 + "</html>");
+                    currentLabel.setHorizontalTextPosition(SwingConstants.CENTER);
+                    currentLabel.setVerticalTextPosition(SwingConstants.TOP);
+                    currentLabel.setForeground(Color.black);
+                    currentLabel.setFont(new Font("tahome", Font.PLAIN, 12));
+                    currentLabel.setIconTextGap(5);
+                    currentcards [2][index] = index;
+                    visitlabel[3][index] = true;
+                }
+            }
+    }
+
+    public static void set1and2cardText(int point, String color, String color1, int price1, String color2, int price2, JLabel currentLabel){
+        currentLabel.setText("<html>" + point + "      " + color + "<br>" + color1 + " = " + price1 + "             " + color2 + " = " + price2 + "</html>");
+        currentLabel.setHorizontalTextPosition(SwingConstants.CENTER);
+        currentLabel.setVerticalTextPosition(SwingConstants.TOP);
+        currentLabel.setForeground(Color.black);
+        currentLabel.setFont(new Font("tahome", Font.PLAIN, 14));
+        currentLabel.setIconTextGap(5);
+
+
+    }
+
+    public static void findprice(int[] price, int[] pass){
+        int k =0;
+        for (int i = 0; i < 5; i++) {
+            if (price[i] != 0){
+                pass[k] = price[i];
+                k++;}
+        }
+    }
+
+    public static void updateCard(Card card ){
+        int passprice[] = new int[2];
+        findprice(card.price , passprice);
+        for (int i = 0; i < visitlabel.length; i++) {
+            if (!visitlabel[1][i]){
+                if (i == 0) {
+                    set1and2cardText(card.getPoint(), card.coin.color, card.colors[0], passprice[0] , card.colors[1] , passprice[1] , lev1card1);
+                    visitlabel[1][i] = true;
+                } else if (i == 1) {
+                    set1and2cardText(card.getPoint(), card.coin.color, card.colors[0], passprice[0] , card.colors[1] , passprice[1] , lev1card2);
+                    visitlabel[1][i] = true;
+                } else if (i == 2) {
+                    set1and2cardText(card.getPoint(), card.coin.color, card.colors[0], passprice[0] , card.colors[1] , passprice[1] , lev1card3);
+                    visitlabel[1][i] = true;
+                } else if (i == 3) {
+                    set1and2cardText(card.getPoint(), card.coin.color, card.colors[0], passprice[0] , card.colors[1] , passprice[1] , lev1card4);
+                    visitlabel[1][i] = true;
+                }
             }
 
-            if (currentLabel != null) {
-                currentLabel.setText("<html>" + point + "  " + color + "<br>" + color1 + " = " + price1 + "             " + color2 + " = " + price2 + "</html>");
-                currentLabel.setHorizontalTextPosition(SwingConstants.CENTER);
-                currentLabel.setVerticalTextPosition(SwingConstants.TOP);
-                currentLabel.setForeground(Color.black);
-                currentLabel.setFont(new Font("tahome", Font.PLAIN, 12));
-                currentLabel.setIconTextGap(5);
-
-                visitlabel[3][index] = true;
-            }
         }
     }
     public static void initstorepanel(JPanel Storepanel){
@@ -455,7 +660,9 @@ public class Card {
 
         }
 
-    public static void BuyLevel1Cards(Player p1 , Player p2 , boolean turn , Card [] cards , JLabel P1label , int []slot){
+    public static void BuyLevel1Cards(Player p1 , Player p2 , boolean turn , Card [] cards , JLabel P1label , int lev1current , SlotMachine green , SlotMachine red , SlotMachine blue , SlotMachine black , SlotMachine white , JButton button0 , JButton button1 , JButton button2 , JButton button3, JButton button4 ){
+        final int[] x = {0};
+        x[0] = lev1current;
             ActionListener lev1cardlistener = new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -463,39 +670,197 @@ public class Card {
                     if (turn){
                         if (e.getSource() == lev1button1){
                             for (int i =0;i < 5;i++){
-                            if ((p1.specialcoincount[i] + p1.coincount[i]) < cards[0].price[i])
+                            if ((p1.specialcoincount[i] + p1.coincount[i]) < cards[currentcards[1][0]].price[i])
                                 sw = true;
                             else
                                 continue;
                             }
                             if (sw == true){
                                 showMessageDialog(null , "You cant buy this card");
-                                return;
                             }
                             else{
-                               if (cards[0].coin.color == "green"){
+                               if (cards[currentcards[1][0]].coin.color == "green"){
                                    p1.specialcoincount[0] ++;
                                }
-                               else if (cards[0].coin.color == "red") {
+                               else if (cards[currentcards[1][0]].coin.color == "red") {
                                    p1.specialcoincount[1] ++;
                                }
-                               else if (cards[0].coin.color == "blue") {
+                               else if (cards[currentcards[1][0]].coin.color == "blue") {
                                    p1.specialcoincount[2] ++;
                                }
-                               else if (cards[0].coin.color == "black") {
+                               else if (cards[currentcards[1][0]].coin.color == "black") {
                                    p1.specialcoincount[3] ++;
                                }
-                               else if (cards[0].coin.color == "white") {
+                               else if (cards[currentcards[1][0]].coin.color == "white") {
                                    p1.specialcoincount[4] ++;
                                }
 
                                 for (int i = 0; i < 5; i++) {
-                                    p1.coincount[i] -= cards[0].price[i];
-                                    slot[i] += cards[0].price[i];
+                                    p1.coincount[i] -= cards[currentcards[1][0]].price[i];
+                                }
+                                green.count += cards[currentcards[1][1]].price[0];
+                                red.count += cards[currentcards[1][1]].price[1];
+                                blue.count += cards[currentcards[1][1]].price[2];
+                                black.count += cards[currentcards[1][1]].price[3];
+                                white.count += cards[currentcards[1][1]].price[4];
+
+                                green.setslotText(button0);
+                                red.setslotText(button1);
+                                blue.setslotText(button2);
+                                black.setslotText(button3);
+                                white.setslotText(button4);
+
+                                p1.point += cards[currentcards[1][0]].getPoint();
+                                visitlabel[1][0] = false;
+                               currentcards[1][0] = lev1current;
+                               updateCard(cards[lev1current] );
+                            }
+
+                        }
+
+                        if (e.getSource() == lev1button2){
+                            for (int i =0;i < 5;i++){
+                                if ((p1.specialcoincount[i] + p1.coincount[i]) < cards[currentcards[1][1]].price[i])
+                                    sw = true;
+                            }
+                            if (sw == true){
+                                showMessageDialog(null , "You cant buy this card");
+                            }
+                            else{
+                                if (cards[currentcards[1][1]].coin.color == "green"){
+                                    p1.specialcoincount[0] ++;
+                                }
+                                else if (cards[currentcards[1][1]].coin.color == "red") {
+                                    p1.specialcoincount[1] ++;
+                                }
+                                else if (cards[currentcards[1][1]].coin.color == "blue") {
+                                    p1.specialcoincount[2] ++;
+                                }
+                                else if (cards[currentcards[1][1]].coin.color == "black") {
+                                    p1.specialcoincount[3] ++;
+                                }
+                                else if (cards[currentcards[1][1]].coin.color == "white") {
+                                    p1.specialcoincount[4] ++;
                                 }
 
-                               p1.point += cards[0].getPoint();
+                                for (int i = 0; i < 5; i++) {
+                                    p1.coincount[i] -= cards[currentcards[1][1]].price[i];
+                                }
+
+                                green.count += cards[currentcards[1][1]].price[0];
+                                red.count += cards[currentcards[1][1]].price[1];
+                                blue.count += cards[currentcards[1][1]].price[2];
+                                black.count += cards[currentcards[1][1]].price[3];
+                                white.count += cards[currentcards[1][1]].price[4];
+
+                                green.setslotText(button0);
+                                red.setslotText(button1);
+                                blue.setslotText(button2);
+                                black.setslotText(button3);
+                                white.setslotText(button4);
+
+                                p1.point += cards[currentcards[1][1]].getPoint();
+                                visitlabel[1][1] = false;
+                                currentcards[1][1] = lev1current;
+                                updateCard(cards[lev1current] );
                             }
+
+                        }
+
+                        if (e.getSource() == lev1button3){
+                            for (int i =0;i < 5;i++){
+                                if ((p1.specialcoincount[i] + p1.coincount[i]) < cards[currentcards[1][2]].price[i])
+                                    sw = true;
+                            }
+                            if (sw == true){
+                                showMessageDialog(null , "You cant buy this card");
+                            }
+                            else{
+                                if (cards[currentcards[1][2]].coin.color == "green"){
+                                    p1.specialcoincount[0] ++;
+                                }
+                                else if (cards[currentcards[1][2]].coin.color == "red") {
+                                    p1.specialcoincount[1] ++;
+                                }
+                                else if (cards[currentcards[1][2]].coin.color == "blue") {
+                                    p1.specialcoincount[2] ++;
+                                }
+                                else if (cards[currentcards[1][2]].coin.color == "black") {
+                                    p1.specialcoincount[3] ++;
+                                }
+                                else if (cards[currentcards[1][2]].coin.color == "white") {
+                                    p1.specialcoincount[4] ++;
+                                }
+
+                                for (int i = 0; i < 5; i++) {
+                                    p1.coincount[i] -= cards[currentcards[1][2]].price[i];
+                                }
+                                green.count += cards[currentcards[1][1]].price[0];
+                                red.count += cards[currentcards[1][1]].price[1];
+                                blue.count += cards[currentcards[1][1]].price[2];
+                                black.count += cards[currentcards[1][1]].price[3];
+                                white.count += cards[currentcards[1][1]].price[4];
+
+                                green.setslotText(button0);
+                                red.setslotText(button1);
+                                blue.setslotText(button2);
+                                black.setslotText(button3);
+                                white.setslotText(button4);
+
+                                p1.point += cards[currentcards[1][2]].getPoint();
+                                visitlabel[1][2] = false;
+                                currentcards[1][2] = lev1current;
+                                updateCard(cards[lev1current] );
+                            }
+
+                        }
+
+                        if (e.getSource() == lev1button4){
+                            for (int i =0;i < 5;i++){
+                                if ((p1.specialcoincount[i] + p1.coincount[i]) < cards[currentcards[1][3]].price[i])
+                                    sw = true;
+                            }
+                            if (sw == true){
+                                showMessageDialog(null , "You cant buy this card");
+                            }
+                            else{
+                                if (cards[currentcards[1][3]].coin.color == "green"){
+                                    p1.specialcoincount[0] ++;
+                                }
+                                else if (cards[currentcards[1][3]].coin.color == "red") {
+                                    p1.specialcoincount[1] ++;
+                                }
+                                else if (cards[currentcards[1][3]].coin.color == "blue") {
+                                    p1.specialcoincount[2] ++;
+                                }
+                                else if (cards[currentcards[1][3]].coin.color == "black") {
+                                    p1.specialcoincount[3] ++;
+                                }
+                                else if (cards[currentcards[1][3]].coin.color == "white") {
+                                    p1.specialcoincount[4] ++;
+                                }
+
+                                for (int i = 0; i < 5; i++) {
+                                    p1.coincount[i] -= cards[currentcards[1][3]].price[i];
+                                }
+                                green.count += cards[currentcards[1][1]].price[0];
+                                red.count += cards[currentcards[1][1]].price[1];
+                                blue.count += cards[currentcards[1][1]].price[2];
+                                black.count += cards[currentcards[1][1]].price[3];
+                                white.count += cards[currentcards[1][1]].price[4];
+
+                                green.setslotText(button0);
+                                red.setslotText(button1);
+                                blue.setslotText(button2);
+                                black.setslotText(button3);
+                                white.setslotText(button4);
+
+                                p1.point += cards[currentcards[1][3]].getPoint();
+                                visitlabel[1][3] = false;
+                                currentcards[1][3] = lev1current;
+                                updateCard(cards[lev1current] );
+                            }
+
                         }
                     }
                     setplayertext(P1label , p1 , 1);
@@ -503,6 +868,9 @@ public class Card {
             };
 
             lev1button1.addActionListener(lev1cardlistener);
+            lev1button2.addActionListener(lev1cardlistener);
+            lev1button3.addActionListener(lev1cardlistener);
+            lev1button4.addActionListener(lev1cardlistener);
         }
     }
 

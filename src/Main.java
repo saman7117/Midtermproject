@@ -83,48 +83,60 @@ public class Main  {
 
         initstorepanel(Storepanel);
 
-            int[] passprice;
-            passprice = new int[2];
-
+        int j = 0;
+        int k = 0;
         for (int i = 0; i < 4; i++) {
-            for (int k = 0; k < 2; k++) {
-                for (int j = 0; j < 5; j++) {
-                    if (Level1cards[i].price[j] != 0)
+            int[] passprice = new int[2]; // Declare passprice array inside the outer loop
+                k = 0;
+                for (j = 0; j < 5; j++) {
+                    if (Level1cards[i].price[j] != 0) {
                         passprice[k] = Level1cards[i].price[j];
+                        k++;
+                    }
                 }
-            }
-            Level1cards[i].setCardlevel1Location(i, Level1cards[i].getPoint(), Level1cards[i].coin.color, Level1cards[i].colors[0], Level1cards[i].colors[1] , passprice[0] , passprice[1]);
+
+
+            Level1cards[i].setCardlevel1Location( i , Level1cards[i].getPoint() , Level1cards[i].coin.color , Level1cards[i].colors[0] , Level1cards[i].colors[1] , passprice[0], passprice[1]);
         }
 
 
+
         for (int i = 0; i < 4; i++) {
-            for (int k = 0; k < 2; k++) {
-                for (int j = 0; j < 5; j++) {
-                    if (Level2cards[i].price[j] != 0)
-                        passprice[k] = Level1cards[i].price[j];
+            int[] passprice = new int[2];
+            k = 0;
+                for (j = 0; j < 5; j++) {
+                    if (Level2cards[i].price[j] != 0) {
+                        passprice[k] = Level2cards[i].price[j];
+                        k++;
+                    }
                 }
-            }
             Level2cards[i].setCardlevel2Location(i, Level2cards[i].getPoint(), Level2cards[i].coin.color, Level2cards[i].colors[0], Level2cards[i].colors[1] , passprice[0] , passprice[1]);
         }
 
 
         for (int i = 0; i < 4; i++) {
-            for (int k = 0; k < 2; k++) {
-                for (int j = 0; j < 5; j++) {
-                    if (Level3cards[i].price[j] != 0)
+            int[] passprice = new int[3];
+            k = 0;
+                for (j = 0; j < 5; j++) {
+                    if (Level3cards[i].price[j] != 0) {
                         passprice[k] = Level3cards[i].price[j];
+                        k++;
+                    }
                 }
-            }
-            Level3cards[i].setCardlevel3Location(i, Level3cards[i].getPoint(), Level3cards[i].coin.color, Level3cards[i].colors[0], Level3cards[i].colors[1] , passprice[0] , passprice[1]);
+
+            Level3cards[i].setCardlevel3Location(i, Level3cards[i].getPoint(), Level3cards[i].coin.color, Level3cards[i].colors[0], Level3cards[i].colors[1] , Level3cards[i].colors[2] , passprice[0] , passprice[1] , passprice[2]);
         }
 
         for (int i = 0; i < 3; i++) {
-            for (int k = 0; k < 2; k++) {
-                for (int j = 0; j < 5; j++) {
-                    if (prizecards[i].price[j] != 0)
+            int[] passprice = new int[2];
+                k = 0;
+                for (j = 0; j < 5; j++) {
+                    if (prizecards[i].price[j] != 0){
                         passprice[k] = prizecards[i].price[j];
+                        k++;
+                    }
                 }
-            }
+
             prizecards[i].setCardlevel0ocation(i, prizecards[i].getPoint(), prizecards[i].colors[0] ,  prizecards[i].colors[1] , passprice[0] , passprice[1]);
         }
 
@@ -194,6 +206,7 @@ public class Main  {
         button0.setText(green.count + "/4");
         button2.setText(blue.count + "/4");
         button3.setText(black.count + "/4");
+        button3.setForeground(Color.white);
         button4.setText(white.count + "/4");
 
         slotpanel.add(button0);
@@ -316,24 +329,24 @@ public class Main  {
                         if (e.getSource() == button0) {
                             count++;
                             green.drawCoinsFromDifferentMachines(player2, 0 , count , playerturn[0]);
-                            button0.setText(green.count + "/4");
+                            green.setslotText(button0);
 
                         } else if (e.getSource() == button1) {
                             count ++;
                             red.drawCoinsFromDifferentMachines(player2, 1 , count , playerturn[0]);
-                            button1.setText(red.count + "/4");
+                            red.setslotText(button1);
                         } else if (e.getSource() == button2) {
                             count++;
                             blue.drawCoinsFromDifferentMachines(player2, 2 , count , playerturn[0]);
-                            button2.setText(blue.count + "/4");
+                            blue.setslotText(button2);
                         } else if (e.getSource() == button3) {
                             count ++;
                             black.drawCoinsFromDifferentMachines(player2, 3 , count , playerturn[0]);
-                            button3.setText(black.count + "/4");
+                            black.setslotText(button3);
                         } else if (e.getSource() == button4) {
                             count++;
                             white.drawCoinsFromDifferentMachines(player2, 4 , count , playerturn[0]);
-                            button4.setText(white.count + "/4");
+                            white.setslotText(button4);
                         }
 
                     }
@@ -341,11 +354,30 @@ public class Main  {
                 }
             }
         };
+
+        int lev1current = 4;
+
         int [] addslot;
         addslot = new int[5];
-        BuyLevel1Cards(player1 , player2 , playerturn[0], Level1cards , P1label , addslot);
+        BuyLevel1Cards(player1 , player2 , playerturn[0], Level1cards , P1label , lev1current , green , red , blue , black , white , button0 , button1 , button2 , button3 , button4);
+
+
+
+        /*if(BuyLevel1Cards(player1 , player2 , playerturn[0], Level1cards , P1label , addslot) == true) {
+            int[] passprice = new int[0];
+            for (k = 0; k < 2; k++) {
+                passprice = new int[2];
+                for (; j < 5; j++) {
+                    if (Level1cards[lev1current].price[j] != 0)
+                        passprice[k] = Level1cards[lev1current].price[j];
+                }
+            }
+           /* for (; lev1current < 15;lev1current++)
+            Level1cards[lev1current].setCardlevel1Location( , passprice[0], passprice[1]);
+
+        }
         red.addcoin(green ,blue , black , white , addslot);
-        red.setSlotmachineText(green ,blue , black , white , button1 , button0 , button2 , button3 , button4);
+        red.setSlotmachineText(green ,blue , black , white , button1 , button0 , button2 , button3 , button4);*/
 
 
 
