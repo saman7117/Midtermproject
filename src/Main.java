@@ -70,6 +70,16 @@ public class Main  {
             prizecards[i] = new Card(0);
         }
 
+        Card [][] cards = new Card[4][15];
+        for (int i = 0; i < 15; i++) {
+            cards[1][i] = new Card(1);
+            cards[2][i] = new Card(2);
+            cards[3][i] = new Card(3);
+        }
+
+        for (int i = 0; i < 3; i++) {
+            cards[0][i] = new Card(0);
+        }
 
         JLabel P1label = new JLabel();
 
@@ -86,17 +96,17 @@ public class Main  {
         int j = 0;
         int k = 0;
         for (int i = 0; i < 4; i++) {
-            int[] passprice = new int[2]; // Declare passprice array inside the outer loop
+            int[] passprice = new int[2];
                 k = 0;
                 for (j = 0; j < 5; j++) {
-                    if (Level1cards[i].price[j] != 0) {
-                        passprice[k] = Level1cards[i].price[j];
+                    if (cards[1][i].price[j] != 0) {
+                        passprice[k] = cards[1][i].price[j];
                         k++;
                     }
                 }
 
 
-            Level1cards[i].setCardlevel1Location( i , Level1cards[i].getPoint() , Level1cards[i].coin.color , Level1cards[i].colors[0] , Level1cards[i].colors[1] , passprice[0], passprice[1]);
+            cards[1][i].setCardlevel1Location( i , cards[1][i].getPoint() , cards[1][i].coin.color , cards[1][i].colors[0] , cards[1][i].colors[1] , passprice[0], passprice[1]);
         }
 
 
@@ -105,12 +115,12 @@ public class Main  {
             int[] passprice = new int[2];
             k = 0;
                 for (j = 0; j < 5; j++) {
-                    if (Level2cards[i].price[j] != 0) {
-                        passprice[k] = Level2cards[i].price[j];
+                    if (cards[2][i].price[j] != 0) {
+                        passprice[k] = cards[2][i].price[j];
                         k++;
                     }
                 }
-            Level2cards[i].setCardlevel2Location(i, Level2cards[i].getPoint(), Level2cards[i].coin.color, Level2cards[i].colors[0], Level2cards[i].colors[1] , passprice[0] , passprice[1]);
+            cards[2][i].setCardlevel2Location(i,cards[2][i].getPoint(), cards[2][i].coin.color, cards[2][i].colors[0], cards[2][i].colors[1] , passprice[0] , passprice[1]);
         }
 
 
@@ -118,26 +128,26 @@ public class Main  {
             int[] passprice = new int[3];
             k = 0;
                 for (j = 0; j < 5; j++) {
-                    if (Level3cards[i].price[j] != 0) {
-                        passprice[k] = Level3cards[i].price[j];
+                    if (cards[3][i].price[j] != 0) {
+                        passprice[k] = cards[3][i].price[j];
                         k++;
                     }
                 }
 
-            Level3cards[i].setCardlevel3Location(i, Level3cards[i].getPoint(), Level3cards[i].coin.color, Level3cards[i].colors[0], Level3cards[i].colors[1] , Level3cards[i].colors[2] , passprice[0] , passprice[1] , passprice[2]);
+            cards[3][i].setCardlevel3Location(i, cards[3][i].getPoint(), cards[3][i].coin.color, cards[3][i].colors[0], cards[3][i].colors[1] , cards[3][i].colors[2] , passprice[0] , passprice[1] , passprice[2]);
         }
 
         for (int i = 0; i < 3; i++) {
             int[] passprice = new int[2];
                 k = 0;
                 for (j = 0; j < 5; j++) {
-                    if (prizecards[i].price[j] != 0){
-                        passprice[k] = prizecards[i].price[j];
+                    if (cards[0][i].price[j] != 0){
+                        passprice[k] = cards[0][i].price[j];
                         k++;
                     }
                 }
 
-            prizecards[i].setCardlevel0ocation(i, prizecards[i].getPoint(), prizecards[i].colors[0] ,  prizecards[i].colors[1] , passprice[0] , passprice[1]);
+            cards[0][i].setCardlevel0ocation(i, cards[0][i].getPoint(), cards[0][i].colors[0] ,  cards[0][i].colors[1] , passprice[0] , passprice[1]);
         }
 
         P1label.setForeground(Color.BLACK);
@@ -355,11 +365,14 @@ public class Main  {
             }
         };
 
-        int lev1current = 4;
+        int Next[] = new int[4];
+        for (int i = 0; i < Next.length; i++) {
+            Next[i] = 4;
+        }
 
         int [] addslot;
         addslot = new int[5];
-        BuyLevel1Cards(player1 , player2 , playerturn[0], Level1cards , P1label , lev1current , green , red , blue , black , white , button0 , button1 , button2 , button3 , button4);
+        BuyLevel1Cards(player1 , player2 , playerturn[0], cards , P1label , Next , green , red , blue , black , white , button0 , button1 , button2 , button3 , button4);
 
 
 
