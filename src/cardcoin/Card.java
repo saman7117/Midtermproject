@@ -10,7 +10,6 @@ import java.util.Arrays;
 import java.util.Random;
 
 import static javax.swing.JOptionPane.showMessageDialog;
-import static playerslot.Player.playerspec;
 import static playerslot.Player.setplayertext;
 
 public class Card {
@@ -44,6 +43,9 @@ public class Card {
     static JLabel lev3card2;
     static JLabel lev3card3;
     static JLabel lev3card4;
+    static JPanel cellPanel1 = new JPanel();
+    static JPanel cellPanel2 = new JPanel();
+    static JPanel cellPanel3 = new JPanel();
 
     static JButton clawbutton1 = new JButton("Buy");
     static JButton clawbutton2 = new JButton("Buy");
@@ -98,7 +100,6 @@ public class Card {
         int max;
         int range;
         int rand;
-        int sum;
         Random random = new Random();
         Random house = new Random();
         this.level = level;
@@ -164,9 +165,8 @@ public class Card {
             setPoint(rand);
             int []numbers;
             numbers = new int[2];
-            int houses[] = new int[2];
+            int [] houses = new int[2];
             min = 3;
-            max = 4;
             range = max - min + 1;
             numbers[0] = (int) (Math.random() * range) + min;
 
@@ -217,7 +217,7 @@ public class Card {
             range = max - min + 1;
             rand = (int) (Math.random() * range) + min;
             setPoint(rand);
-            int numbers[];
+            int [] numbers;
             numbers = new int[3];
             int houses[] = new int[3];
             min = 1;
@@ -278,8 +278,6 @@ public class Card {
                 } else if (houses[i] == 2) {
                     this.colors[i] = "blue";
                 } else if (houses[i] == 3) {
-                    this.colors[i] = "black";
-                }else if (houses[i] == 3) {
                     this.colors[i] = "black";
                 } else if (houses[i] == 4) {
                     this.colors[i] = "white";
@@ -501,7 +499,7 @@ public class Card {
     }
 
     public static void updateCard(Card card ){
-        int passprice[] = new int[3];
+        int [] passprice = new int[3];
         findprice(card.price , passprice);
         for (int i = 0; i < visitlabel.length; i++) {
             if (card.level == 1) {
@@ -621,15 +619,15 @@ public class Card {
 
                 cellPanel.add(claw1);
                 cellPanel.add(clawbutton1);
-                cellPanel.add(clawRes1);
+
                 cellPanel.add(claw2);
                 cellPanel.add(clawbutton2);
-                cellPanel.add(clawRes2);
+
                 cellPanel.add(claw3);
                 cellPanel.add(clawbutton3);
-                cellPanel.add(clawRes3);
 
-                JPanel cellPanel1 = new JPanel();
+
+
                 cellPanel1.setLayout(new BoxLayout(cellPanel1, BoxLayout.LINE_AXIS));
                 cellPanel1.setBackground(new Color(139 , 0 , 0));
 
@@ -646,7 +644,7 @@ public class Card {
                 cellPanel1.add(lev1button4);
                 cellPanel1.add(lev1Res4);
 
-                JPanel cellPanel2 = new JPanel();
+
                 cellPanel2.setLayout(new BoxLayout(cellPanel2, BoxLayout.LINE_AXIS));
                 cellPanel2.setBackground(new Color(139 , 0 , 0));
 
@@ -663,7 +661,7 @@ public class Card {
         cellPanel2.add(lev2button4);
         cellPanel2.add(lev2Res4);
 
-                JPanel cellPanel3 = new JPanel();
+
                 cellPanel3.setLayout(new BoxLayout(cellPanel3,BoxLayout.LINE_AXIS));
                 cellPanel3.setBackground(new Color(139 , 0 , 0));
 
@@ -693,21 +691,19 @@ public class Card {
 
         }
 
-    public static void BuyLevel1Cards(Player p1 , Player p2 , boolean turn , Card [][] cards , JLabel P1label , int next[] , SlotMachine green , SlotMachine red , SlotMachine blue , SlotMachine black , SlotMachine white , JButton button0 , JButton button1 , JButton button2 , JButton button3, JButton button4 ){
+    public static void BuyCards(Player p1 , Player p2 , boolean [] turn , Card [][] cards , JLabel P1label , int next[] , SlotMachine green , SlotMachine red , SlotMachine blue , SlotMachine black , SlotMachine white , JButton button0 , JButton button1 , JButton button2 , JButton button3, JButton button4 ){
 
             ActionListener lev1cardlistener = new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                  boolean sw = false;
-                    if (turn){
+                    if (turn[0]){
                         if (e.getSource() == lev1button1){
                             for (int i =0;i < 5;i++){
                             if ((p1.specialcoincount[i] + p1.coincount[i]) < cards[1][currentcards[1][0]].price[i])
                                 sw = true;
-                            else
-                                continue;
                             }
-                            if (sw == true){
+                            if (sw){
                                 showMessageDialog(null , "You cant buy this card");
                             }
                             else{
@@ -745,10 +741,17 @@ public class Card {
                                 white.setslotText(button4);
 
                                 p1.point += cards[1][currentcards[1][0]].getPoint();
-                                visitlabel[1][0] = false;
-                               currentcards[1][0] = next[1];
-                               updateCard(cards[1][next[1]] );
-                               next[1] ++;
+                                if (next[1] <= 14) {
+                                    visitlabel[1][0] = false;
+                                    currentcards[1][0] = next[1];
+                                    updateCard(cards[1][next[1]]);
+                                    next[1]++;
+                                }
+                                else {
+                                    cellPanel1.remove(lev1card1);
+                                    cellPanel1.remove(lev1button1);
+                                    cellPanel1.remove(lev1Res1);
+                                }
                             }
 
                         }
@@ -758,7 +761,7 @@ public class Card {
                                 if ((p1.specialcoincount[i] + p1.coincount[i]) < cards[1][currentcards[1][1]].price[i])
                                     sw = true;
                             }
-                            if (sw == true){
+                            if (sw){
                                 showMessageDialog(null , "You cant buy this card");
                             }
                             else{
@@ -780,6 +783,7 @@ public class Card {
 
                                 for (int i = 0; i < 5; i++) {
                                     p1.coincount[i] -= cards[1][currentcards[1][1]].price[i];
+                                    if (p1.coincount[i] < 0)
                                     p1.coincount[i] = 0;
                                 }
 
@@ -796,10 +800,17 @@ public class Card {
                                 white.setslotText(button4);
 
                                 p1.point += cards[1][currentcards[1][1]].getPoint();
-                                visitlabel[1][1] = false;
-                                currentcards[1][1] = next[1];
-                                updateCard(cards[1][next[1]]);
-                                next[1] ++;
+                                if (next[1] <=14) {
+                                    visitlabel[1][1] = false;
+                                    currentcards[1][1] = next[1];
+                                    updateCard(cards[1][next[1]]);
+                                    next[1]++;
+                                }
+                                else {
+                                    cellPanel1.remove(lev1card2);
+                                    cellPanel1.remove(lev1button2);
+                                    cellPanel1.remove(lev1Res2);
+                                }
                             }
 
                         }
@@ -809,7 +820,7 @@ public class Card {
                                 if ((p1.specialcoincount[i] + p1.coincount[i]) < cards[1][currentcards[1][2]].price[i])
                                     sw = true;
                             }
-                            if (sw == true){
+                            if (sw){
                                 showMessageDialog(null , "You cant buy this card");
                             }
                             else{
@@ -831,6 +842,7 @@ public class Card {
 
                                 for (int i = 0; i < 5; i++) {
                                     p1.coincount[i] -= cards[1][currentcards[1][2]].price[i];
+                                    if (p1.coincount[i] < 0)
                                     p1.coincount[i] = 0;
                                 }
                                 green.count += cards[1][currentcards[1][2]].price[0];
@@ -846,10 +858,17 @@ public class Card {
                                 white.setslotText(button4);
 
                                 p1.point += cards[1][currentcards[1][2]].getPoint();
-                                visitlabel[1][2] = false;
-                                currentcards[1][2] = next[1];
-                                updateCard(cards[1][next[1]] );
-                                next[1] ++;
+                                if (next[1] <= 14) {
+                                    visitlabel[1][2] = false;
+                                    currentcards[1][2] = next[1];
+                                    updateCard(cards[1][next[1]]);
+                                    next[1]++;
+                                }
+                                else {
+                                    cellPanel1.remove(lev1card3);
+                                    cellPanel1.remove(lev1button3);
+                                    cellPanel1.remove(lev1Res3);
+                                }
                             }
 
                         }
@@ -859,7 +878,7 @@ public class Card {
                                 if ((p1.specialcoincount[i] + p1.coincount[i]) < cards[1][currentcards[1][3]].price[i])
                                     sw = true;
                             }
-                            if (sw == true){
+                            if (sw){
                                 showMessageDialog(null , "You cant buy this card");
                             }
                             else{
@@ -881,6 +900,7 @@ public class Card {
 
                                 for (int i = 0; i < 5; i++) {
                                     p1.coincount[i] -= cards[1][currentcards[1][3]].price[i];
+                                    if (p1.coincount[i] < 0)
                                     p1.coincount[i] = 0;
                                 }
                                 green.count += cards[1][currentcards[1][3]].price[0];
@@ -896,10 +916,17 @@ public class Card {
                                 white.setslotText(button4);
 
                                 p1.point += cards[1][currentcards[1][3]].getPoint();
-                                visitlabel[1][3] = false;
-                                currentcards[1][3] = next[1];
-                                updateCard(cards[1][next[1]] );
-                                next[1] ++;
+                                if (next[1] <= 14) {
+                                    visitlabel[1][3] = false;
+                                    currentcards[1][3] = next[1];
+                                    updateCard(cards[1][next[1]]);
+                                    next[1]++;
+                                }
+                                else {
+                                    cellPanel1.remove(lev1card4);
+                                    cellPanel1.remove(lev1button4);
+                                    cellPanel1.remove(lev1Res4);
+                                }
                             }
 
                         }
@@ -911,7 +938,7 @@ public class Card {
                                 else
                                     continue;
                             }
-                            if (sw == true){
+                            if (sw){
                                 showMessageDialog(null , "You cant buy this card");
                             }
                             else{
@@ -933,6 +960,7 @@ public class Card {
 
                                 for (int i = 0; i < 5; i++) {
                                     p1.coincount[i] -= cards[2][currentcards[2][0]].price[i];
+                                    if (p1.coincount[i] < 0)
                                     p1.coincount[i] = 0;
                                 }
                                 green.count += cards[2][currentcards[2][0]].price[0];
@@ -948,10 +976,17 @@ public class Card {
                                 white.setslotText(button4);
 
                                 p1.point += cards[2][currentcards[2][0]].getPoint();
-                                visitlabel[2][0] = false;
-                                currentcards[2][0] = next[2];
-                                updateCard(cards[2][next[2]] );
-                                next[2] ++;
+                                if (next[2] <= 14) {
+                                    visitlabel[2][0] = false;
+                                    currentcards[2][0] = next[2];
+                                    updateCard(cards[2][next[2]]);
+                                    next[2]++;
+                                }
+                                else{
+                                    cellPanel2.remove(lev2card1);
+                                    cellPanel2.remove(lev2button1);
+                                    cellPanel2.remove(lev2Res1);
+                                }
                             }
                         }
 
@@ -962,7 +997,7 @@ public class Card {
                                 else
                                     continue;
                             }
-                            if (sw == true){
+                            if (sw){
                                 showMessageDialog(null , "You cant buy this card");
                             }
                             else{
@@ -984,6 +1019,7 @@ public class Card {
 
                                 for (int i = 0; i < 5; i++) {
                                     p1.coincount[i] -= cards[2][currentcards[2][1]].price[i];
+                                    if (p1.coincount[i] < 0)
                                     p1.coincount[i] = 0;
                                 }
                                 green.count += cards[2][currentcards[2][1]].price[0];
@@ -999,10 +1035,17 @@ public class Card {
                                 white.setslotText(button4);
 
                                 p1.point += cards[2][currentcards[2][1]].getPoint();
-                                visitlabel[2][1] = false;
-                                currentcards[2][1] = next[2];
-                                updateCard(cards[2][next[2]] );
-                                next[2] ++;
+                                if (next[2] <= 14) {
+                                    visitlabel[2][1] = false;
+                                    currentcards[2][1] = next[2];
+                                    updateCard(cards[2][next[2]]);
+                                    next[2]++;
+                                }
+                                else{
+                                    cellPanel2.remove(lev2card2);
+                                    cellPanel2.remove(lev2button2);
+                                    cellPanel2.remove(lev2Res2);
+                                }
                             }
 
                         }
@@ -1014,7 +1057,7 @@ public class Card {
                                 else
                                     continue;
                             }
-                            if (sw == true){
+                            if (sw){
                                 showMessageDialog(null , "You cant buy this card");
                             }
                             else{
@@ -1036,6 +1079,7 @@ public class Card {
 
                                 for (int i = 0; i < 5; i++) {
                                     p1.coincount[i] -= cards[2][currentcards[2][2]].price[i];
+                                    if (p1.coincount[i] < 0)
                                     p1.coincount[i] = 0;
                                 }
                                 green.count += cards[2][currentcards[2][2]].price[0];
@@ -1051,10 +1095,17 @@ public class Card {
                                 white.setslotText(button4);
 
                                 p1.point += cards[2][currentcards[2][2]].getPoint();
-                                visitlabel[2][2] = false;
-                                currentcards[2][2] = next[2];
-                                updateCard(cards[2][next[2]] );
-                                next[2] ++;
+                                if (next[2] <= 14) {
+                                    visitlabel[2][2] = false;
+                                    currentcards[2][2] = next[2];
+                                    updateCard(cards[2][next[2]]);
+                                    next[2]++;
+                                }
+                                else {
+                                    cellPanel2.remove(lev2card3);
+                                    cellPanel2.remove(lev2button3);
+                                    cellPanel2.remove(lev2Res3);
+                                }
                             }
                         }
 
@@ -1065,7 +1116,7 @@ public class Card {
                                 else
                                     continue;
                             }
-                            if (sw == true){
+                            if (sw){
                                 showMessageDialog(null , "You cant buy this card");
                             }
                             else{
@@ -1087,6 +1138,7 @@ public class Card {
 
                                 for (int i = 0; i < 5; i++) {
                                     p1.coincount[i] -= cards[2][currentcards[2][3]].price[i];
+                                    if (p1.coincount[i] < 0)
                                     p1.coincount[i] = 0;
                                 }
                                 green.count += cards[2][currentcards[2][3]].price[0];
@@ -1102,10 +1154,17 @@ public class Card {
                                 white.setslotText(button4);
 
                                 p1.point += cards[2][currentcards[2][3]].getPoint();
-                                visitlabel[2][3] = false;
-                                currentcards[2][3] = next[2];
-                                updateCard(cards[2][next[2]] );
-                                next[2] ++;
+                                if (next[2] <= 14) {
+                                    visitlabel[2][3] = false;
+                                    currentcards[2][3] = next[2];
+                                    updateCard(cards[2][next[2]]);
+                                    next[2]++;
+                                }
+                                else {
+                                    cellPanel2.remove(lev2card4);
+                                    cellPanel2.remove(lev2button4);
+                                    cellPanel2.remove(lev2Res4);
+                                }
                             }
                         }
 
@@ -1138,6 +1197,7 @@ public class Card {
 
                                 for (int i = 0; i < 5; i++) {
                                     p1.coincount[i] -= cards[3][currentcards[3][0]].price[i];
+                                    if (p1.coincount[i] < 0)
                                     p1.coincount[i] = 0;
                                 }
                                 green.count += cards[3][currentcards[3][0]].price[0];
@@ -1153,10 +1213,17 @@ public class Card {
                                 white.setslotText(button4);
 
                                 p1.point += cards[3][currentcards[3][0]].getPoint();
-                                visitlabel[3][0] = false;
-                                currentcards[3][0] = next[3];
-                                updateCard(cards[3][next[3]] );
-                                next[3] ++;
+                                if (next[3] <= 14) {
+                                    visitlabel[3][0] = false;
+                                    currentcards[3][0] = next[3];
+                                    updateCard(cards[3][next[3]]);
+                                    next[3]++;
+                                }
+                                else {
+                                    cellPanel3.remove(lev3card1);
+                                    cellPanel3.remove(lev3button1);
+                                    cellPanel3.remove(lev3Res1);
+                                }
                             }
                         }
 
@@ -1189,6 +1256,7 @@ public class Card {
 
                                 for (int i = 0; i < 5; i++) {
                                     p1.coincount[i] -= cards[3][currentcards[3][1]].price[i];
+                                    if (p1.coincount[i] < 0)
                                     p1.coincount[i] = 0;
                                 }
                                 green.count += cards[3][currentcards[3][1]].price[0];
@@ -1204,10 +1272,17 @@ public class Card {
                                 white.setslotText(button4);
 
                                 p1.point += cards[3][currentcards[3][1]].getPoint();
-                                visitlabel[3][1] = false;
-                                currentcards[3][1] = next[3];
-                                updateCard(cards[3][next[3]] );
-                                next[3] ++;
+                                if (next[3] <=14) {
+                                    visitlabel[3][1] = false;
+                                    currentcards[3][1] = next[3];
+                                    updateCard(cards[3][next[3]]);
+                                    next[3]++;
+                                }
+                                else {
+                                    cellPanel3.remove(lev3card2);
+                                    cellPanel3.remove(lev3button2);
+                                    cellPanel3.remove(lev3Res2);
+                                }
                             }
                         }
 
@@ -1218,7 +1293,7 @@ public class Card {
                                 else
                                     continue;
                             }
-                            if (sw == true){
+                            if (sw){
                                 showMessageDialog(null , "You cant buy this card");
                             }
                             else{
@@ -1240,6 +1315,7 @@ public class Card {
 
                                 for (int i = 0; i < 5; i++) {
                                     p1.coincount[i] -= cards[3][currentcards[3][2]].price[i];
+                                    if (p1.coincount[i] < 0)
                                     p1.coincount[i] = 0;
                                 }
                                 green.count += cards[3][currentcards[3][2]].price[0];
@@ -1255,10 +1331,17 @@ public class Card {
                                 white.setslotText(button4);
 
                                 p1.point += cards[3][currentcards[3][2]].getPoint();
-                                visitlabel[3][2] = false;
-                                currentcards[3][2] = next[3];
-                                updateCard(cards[3][next[3]] );
-                                next[3] ++;
+                                if (next[3] <= 14) {
+                                    visitlabel[3][2] = false;
+                                    currentcards[3][2] = next[3];
+                                    updateCard(cards[3][next[3]]);
+                                    next[3]++;
+                                }
+                                else {
+                                    cellPanel3.remove(lev3card3);
+                                    cellPanel3.remove(lev3button3);
+                                    cellPanel3.remove(lev3Res3);
+                                }
                             }
                         }
 
@@ -1269,7 +1352,7 @@ public class Card {
                                 else
                                     continue;
                             }
-                            if (sw == true){
+                            if (sw){
                                 showMessageDialog(null , "You cant buy this card");
                             }
                             else{
@@ -1291,6 +1374,7 @@ public class Card {
 
                                 for (int i = 0; i < 5; i++) {
                                     p1.coincount[i] -= cards[3][currentcards[3][3]].price[i];
+                                    if (p1.coincount[i] < 0)
                                     p1.coincount[i] = 0;
                                 }
                                 green.count += cards[3][currentcards[3][3]].price[0];
@@ -1306,10 +1390,725 @@ public class Card {
                                 white.setslotText(button4);
 
                                 p1.point += cards[3][currentcards[3][3]].getPoint();
-                                visitlabel[3][3] = false;
-                                currentcards[3][3] = next[3];
-                                updateCard(cards[3][next[3]] );
-                                next[3] ++;
+                                if (next[3] <= 14) {
+                                    visitlabel[3][3] = false;
+                                    currentcards[3][3] = next[3];
+                                    updateCard(cards[3][next[3]]);
+                                    next[3]++;
+                                }
+                                else {
+                                    cellPanel3.remove(lev3card4);
+                                    cellPanel3.remove(lev3button4);
+                                    cellPanel3.remove(lev3Res4);
+                                }
+                            }
+                        }
+                    }
+
+                    if (!turn[0]){
+                        if (e.getSource() == lev1button1){
+                            for (int i =0;i < 5;i++){
+                                if ((p2.specialcoincount[i] + p2.coincount[i]) < cards[1][currentcards[1][0]].price[i])
+                                    sw = true;
+                            }
+                            if (sw){
+                                showMessageDialog(null , "You cant buy this card");
+                            }
+                            else{
+                                if (cards[1][currentcards[1][0]].coin.color == "green"){
+                                    p2.specialcoincount[0] ++;
+                                }
+                                else if (cards[1][currentcards[1][0]].coin.color == "red") {
+                                    p2.specialcoincount[1] ++;
+                                }
+                                else if (cards[1][currentcards[1][0]].coin.color == "blue") {
+                                    p2.specialcoincount[2] ++;
+                                }
+                                else if (cards[1][currentcards[1][0]].coin.color == "black") {
+                                    p2.specialcoincount[3] ++;
+                                }
+                                else if (cards[1][currentcards[1][0]].coin.color == "white") {
+                                    p2.specialcoincount[4] ++;
+                                }
+
+                                for (int i = 0; i < 5; i++) {
+                                    p2.coincount[i] -= cards[1][currentcards[1][0]].price[i];
+                                    if (p2.coincount[i] < 0)
+                                        p2.coincount[i] = 0;
+                                }
+                                green.count += cards[1][currentcards[1][0]].price[0];
+                                red.count += cards[1][currentcards[1][0]].price[1];
+                                blue.count += cards[1][currentcards[1][0]].price[2];
+                                black.count += cards[1][currentcards[1][0]].price[3];
+                                white.count += cards[1][currentcards[1][0]].price[4];
+
+                                green.setslotText(button0);
+                                red.setslotText(button1);
+                                blue.setslotText(button2);
+                                black.setslotText(button3);
+                                white.setslotText(button4);
+
+                                p2.point += cards[1][currentcards[1][0]].getPoint();
+                                if (next[1] <= 14) {
+                                    visitlabel[1][0] = false;
+                                    currentcards[1][0] = next[1];
+                                    updateCard(cards[1][next[1]]);
+                                    next[1]++;
+                                }
+                                else {
+                                    cellPanel1.remove(lev1card1);
+                                    cellPanel1.remove(lev1button1);
+                                    cellPanel1.remove(lev1Res1);
+                                }
+                            }
+
+                        }
+
+                        if (e.getSource() == lev1button2){
+                            for (int i =0;i < 5;i++){
+                                if ((p2.specialcoincount[i] + p2.coincount[i]) < cards[1][currentcards[1][1]].price[i])
+                                    sw = true;
+                            }
+                            if (sw){
+                                showMessageDialog(null , "You cant buy this card");
+                            }
+                            else{
+                                if (cards[1][currentcards[1][1]].coin.color == "green"){
+                                    p2.specialcoincount[0] ++;
+                                }
+                                else if (cards[1][currentcards[1][1]].coin.color == "red") {
+                                    p2.specialcoincount[1] ++;
+                                }
+                                else if (cards[1][currentcards[1][1]].coin.color == "blue") {
+                                    p2.specialcoincount[2] ++;
+                                }
+                                else if (cards[1][currentcards[1][1]].coin.color == "black") {
+                                    p2.specialcoincount[3] ++;
+                                }
+                                else if (cards[1][currentcards[1][1]].coin.color == "white") {
+                                    p2.specialcoincount[4] ++;
+                                }
+
+                                for (int i = 0; i < 5; i++) {
+                                    p2.coincount[i] -= cards[1][currentcards[1][1]].price[i];
+                                    if (p1.coincount[i] < 0)
+                                    p2.coincount[i] = 0;
+                                }
+
+                                green.count += cards[1][currentcards[1][1]].price[0];
+                                red.count += cards[1][currentcards[1][1]].price[1];
+                                blue.count += cards[1][currentcards[1][1]].price[2];
+                                black.count += cards[1][currentcards[1][1]].price[3];
+                                white.count += cards[1][currentcards[1][1]].price[4];
+
+                                green.setslotText(button0);
+                                red.setslotText(button1);
+                                blue.setslotText(button2);
+                                black.setslotText(button3);
+                                white.setslotText(button4);
+
+                                p2.point += cards[1][currentcards[1][1]].getPoint();
+                                if (next[1] <=14) {
+                                    visitlabel[1][1] = false;
+                                    currentcards[1][1] = next[1];
+                                    updateCard(cards[1][next[1]]);
+                                    next[1]++;
+                                }
+                                else {
+                                    cellPanel1.remove(lev1card2);
+                                    cellPanel1.remove(lev1button2);
+                                    cellPanel1.remove(lev1Res2);
+                                }
+                            }
+
+                        }
+
+                        if (e.getSource() == lev1button3){
+                            for (int i =0;i < 5;i++){
+                                if ((p2.specialcoincount[i] + p2.coincount[i]) < cards[1][currentcards[1][2]].price[i])
+                                    sw = true;
+                            }
+                            if (sw){
+                                showMessageDialog(null , "You cant buy this card");
+                            }
+                            else{
+                                if (cards[1][currentcards[1][2]].coin.color == "green"){
+                                    p2.specialcoincount[0] ++;
+                                }
+                                else if (cards[1][currentcards[1][2]].coin.color == "red") {
+                                    p2.specialcoincount[1] ++;
+                                }
+                                else if (cards[1][currentcards[1][2]].coin.color == "blue") {
+                                    p2.specialcoincount[2] ++;
+                                }
+                                else if (cards[1][currentcards[1][2]].coin.color == "black") {
+                                    p2.specialcoincount[3] ++;
+                                }
+                                else if (cards[1][currentcards[1][2]].coin.color == "white") {
+                                    p2.specialcoincount[4] ++;
+                                }
+
+                                for (int i = 0; i < 5; i++) {
+                                    p2.coincount[i] -= cards[1][currentcards[1][2]].price[i];
+                                    if (p1.coincount[i] < 0)
+                                    p2.coincount[i] = 0;
+                                }
+                                green.count += cards[1][currentcards[1][2]].price[0];
+                                red.count += cards[1][currentcards[1][2]].price[1];
+                                blue.count += cards[1][currentcards[1][2]].price[2];
+                                black.count += cards[1][currentcards[1][2]].price[3];
+                                white.count += cards[1][currentcards[1][2]].price[4];
+
+                                green.setslotText(button0);
+                                red.setslotText(button1);
+                                blue.setslotText(button2);
+                                black.setslotText(button3);
+                                white.setslotText(button4);
+
+                                p2.point += cards[1][currentcards[1][2]].getPoint();
+                                if (next[1] <= 14) {
+                                    visitlabel[1][2] = false;
+                                    currentcards[1][2] = next[1];
+                                    updateCard(cards[1][next[1]]);
+                                    next[1]++;
+                                }
+                                else {
+                                    cellPanel1.remove(lev1card3);
+                                    cellPanel1.remove(lev1button3);
+                                    cellPanel1.remove(lev1Res3);
+                                }
+                            }
+
+                        }
+
+                        if (e.getSource() == lev1button4){
+                            for (int i =0;i < 5;i++){
+                                if ((p2.specialcoincount[i] + p2.coincount[i]) < cards[1][currentcards[1][3]].price[i])
+                                    sw = true;
+                            }
+                            if (sw){
+                                showMessageDialog(null , "You cant buy this card");
+                            }
+                            else{
+                                if (cards[1][currentcards[1][3]].coin.color == "green"){
+                                    p2.specialcoincount[0] ++;
+                                }
+                                else if (cards[1][currentcards[1][3]].coin.color == "red") {
+                                    p2.specialcoincount[1] ++;
+                                }
+                                else if (cards[1][currentcards[1][3]].coin.color == "blue") {
+                                    p2.specialcoincount[2] ++;
+                                }
+                                else if (cards[1][currentcards[1][3]].coin.color == "black") {
+                                    p2.specialcoincount[3] ++;
+                                }
+                                else if (cards[1][currentcards[1][3]].coin.color == "white") {
+                                    p2.specialcoincount[4] ++;
+                                }
+
+                                for (int i = 0; i < 5; i++) {
+                                    p2.coincount[i] -= cards[1][currentcards[1][3]].price[i];
+                                    if (p1.coincount[i] < 0)
+                                    p2.coincount[i] = 0;
+                                }
+                                green.count += cards[1][currentcards[1][3]].price[0];
+                                red.count += cards[1][currentcards[1][3]].price[1];
+                                blue.count += cards[1][currentcards[1][3]].price[2];
+                                black.count += cards[1][currentcards[1][3]].price[3];
+                                white.count += cards[1][currentcards[1][3]].price[4];
+
+                                green.setslotText(button0);
+                                red.setslotText(button1);
+                                blue.setslotText(button2);
+                                black.setslotText(button3);
+                                white.setslotText(button4);
+
+                                p2.point += cards[1][currentcards[1][3]].getPoint();
+                                if (next[1] <= 14) {
+                                    visitlabel[1][3] = false;
+                                    currentcards[1][3] = next[1];
+                                    updateCard(cards[1][next[1]]);
+                                    next[1]++;
+                                }
+                                else {
+                                    cellPanel1.remove(lev1card4);
+                                    cellPanel1.remove(lev1button4);
+                                    cellPanel1.remove(lev1Res4);
+                                }
+                            }
+
+                        }
+
+                        if (e.getSource() == lev2button1){
+                            for (int i =0;i < 5;i++){
+                                if ((p2.specialcoincount[i] + p2.coincount[i]) < cards[2][currentcards[2][0]].price[i])
+                                    sw = true;
+                                else
+                                    continue;
+                            }
+                            if (sw){
+                                showMessageDialog(null , "You cant buy this card");
+                            }
+                            else{
+                                if (cards[2][currentcards[2][0]].coin.color == "green"){
+                                    p2.specialcoincount[0] ++;
+                                }
+                                else if (cards[2][currentcards[2][0]].coin.color == "red") {
+                                    p2.specialcoincount[1] ++;
+                                }
+                                else if (cards[2][currentcards[2][0]].coin.color == "blue") {
+                                    p2.specialcoincount[2] ++;
+                                }
+                                else if (cards[2][currentcards[2][0]].coin.color == "black") {
+                                    p2.specialcoincount[3] ++;
+                                }
+                                else if (cards[2][currentcards[2][0]].coin.color == "white") {
+                                    p2.specialcoincount[4] ++;
+                                }
+
+                                for (int i = 0; i < 5; i++) {
+                                    p2.coincount[i] -= cards[2][currentcards[2][0]].price[i];
+                                    if (p1.coincount[i] < 0)
+                                    p2.coincount[i] = 0;
+                                }
+                                green.count += cards[2][currentcards[2][0]].price[0];
+                                red.count += cards[2][currentcards[2][0]].price[1];
+                                blue.count += cards[2][currentcards[2][0]].price[2];
+                                black.count += cards[2][currentcards[2][0]].price[3];
+                                white.count += cards[2][currentcards[2][0]].price[4];
+
+                                green.setslotText(button0);
+                                red.setslotText(button1);
+                                blue.setslotText(button2);
+                                black.setslotText(button3);
+                                white.setslotText(button4);
+
+                                p2.point += cards[2][currentcards[2][0]].getPoint();
+                                if (next[2] <= 14) {
+                                    visitlabel[2][0] = false;
+                                    currentcards[2][0] = next[2];
+                                    updateCard(cards[2][next[2]]);
+                                    next[2]++;
+                                }
+                                else{
+                                    cellPanel2.remove(lev2card1);
+                                    cellPanel2.remove(lev2button1);
+                                    cellPanel2.remove(lev2Res1);
+                                }
+                            }
+                        }
+
+                        else if (e.getSource() == lev2button2){
+                            for (int i =0;i < 5;i++){
+                                if ((p2.specialcoincount[i] + p2.coincount[i]) < cards[2][currentcards[2][1]].price[i])
+                                    sw = true;
+                                else
+                                    continue;
+                            }
+                            if (sw){
+                                showMessageDialog(null , "You cant buy this card");
+                            }
+                            else{
+                                if (cards[2][currentcards[2][1]].coin.color == "green"){
+                                    p2.specialcoincount[0] ++;
+                                }
+                                else if (cards[2][currentcards[2][1]].coin.color == "red") {
+                                    p2.specialcoincount[1] ++;
+                                }
+                                else if (cards[2][currentcards[2][1]].coin.color == "blue") {
+                                    p2.specialcoincount[2] ++;
+                                }
+                                else if (cards[2][currentcards[2][1]].coin.color == "black") {
+                                    p2.specialcoincount[3] ++;
+                                }
+                                else if (cards[2][currentcards[2][1]].coin.color == "white") {
+                                    p2.specialcoincount[4] ++;
+                                }
+
+                                for (int i = 0; i < 5; i++) {
+                                    p2.coincount[i] -= cards[2][currentcards[2][1]].price[i];
+                                    if (p1.coincount[i] < 0)
+                                    p2.coincount[i] = 0;
+                                }
+                                green.count += cards[2][currentcards[2][1]].price[0];
+                                red.count += cards[2][currentcards[2][1]].price[1];
+                                blue.count += cards[2][currentcards[2][1]].price[2];
+                                black.count += cards[2][currentcards[2][1]].price[3];
+                                white.count += cards[2][currentcards[2][1]].price[4];
+
+                                green.setslotText(button0);
+                                red.setslotText(button1);
+                                blue.setslotText(button2);
+                                black.setslotText(button3);
+                                white.setslotText(button4);
+
+                                p2.point += cards[2][currentcards[2][1]].getPoint();
+                                if (next[2] <= 14) {
+                                    visitlabel[2][1] = false;
+                                    currentcards[2][1] = next[2];
+                                    updateCard(cards[2][next[2]]);
+                                    next[2]++;
+                                }
+                                else{
+                                    cellPanel2.remove(lev2card2);
+                                    cellPanel2.remove(lev2button2);
+                                    cellPanel2.remove(lev2Res2);
+                                }
+                            }
+
+                        }
+
+                        else if (e.getSource() == lev2button3){
+                            for (int i =0;i < 5;i++){
+                                if ((p2.specialcoincount[i] + p2.coincount[i]) < cards[2][currentcards[2][2]].price[i])
+                                    sw = true;
+                                else
+                                    continue;
+                            }
+                            if (sw){
+                                showMessageDialog(null , "You cant buy this card");
+                            }
+                            else{
+                                if (cards[2][currentcards[2][2]].coin.color == "green"){
+                                    p2.specialcoincount[0] ++;
+                                }
+                                else if (cards[2][currentcards[2][2]].coin.color == "red") {
+                                    p2.specialcoincount[1] ++;
+                                }
+                                else if (cards[2][currentcards[2][2]].coin.color == "blue") {
+                                    p2.specialcoincount[2] ++;
+                                }
+                                else if (cards[2][currentcards[2][2]].coin.color == "black") {
+                                    p2.specialcoincount[3] ++;
+                                }
+                                else if (cards[2][currentcards[2][2]].coin.color == "white") {
+                                    p2.specialcoincount[4] ++;
+                                }
+
+                                for (int i = 0; i < 5; i++) {
+                                    p2.coincount[i] -= cards[2][currentcards[2][2]].price[i];
+                                    if (p1.coincount[i] < 0)
+                                    p2.coincount[i] = 0;
+                                }
+                                green.count += cards[2][currentcards[2][2]].price[0];
+                                red.count += cards[2][currentcards[2][2]].price[1];
+                                blue.count += cards[2][currentcards[2][2]].price[2];
+                                black.count += cards[2][currentcards[2][2]].price[3];
+                                white.count += cards[2][currentcards[2][2]].price[4];
+
+                                green.setslotText(button0);
+                                red.setslotText(button1);
+                                blue.setslotText(button2);
+                                black.setslotText(button3);
+                                white.setslotText(button4);
+
+                                p2.point += cards[2][currentcards[2][2]].getPoint();
+                                if (next[2] <= 14) {
+                                    visitlabel[2][2] = false;
+                                    currentcards[2][2] = next[2];
+                                    updateCard(cards[2][next[2]]);
+                                    next[2]++;
+                                }
+                                else {
+                                    cellPanel2.remove(lev2card3);
+                                    cellPanel2.remove(lev2button3);
+                                    cellPanel2.remove(lev2Res3);
+                                }
+                            }
+                        }
+
+                        else if (e.getSource() == lev2button4){
+                            for (int i =0;i < 5;i++){
+                                if ((p2.specialcoincount[i] + p2.coincount[i]) < cards[2][currentcards[2][3]].price[i])
+                                    sw = true;
+                                else
+                                    continue;
+                            }
+                            if (sw){
+                                showMessageDialog(null , "You cant buy this card");
+                            }
+                            else{
+                                if (cards[2][currentcards[2][3]].coin.color == "green"){
+                                    p2.specialcoincount[0] ++;
+                                }
+                                else if (cards[2][currentcards[2][3]].coin.color == "red") {
+                                    p2.specialcoincount[1] ++;
+                                }
+                                else if (cards[2][currentcards[2][3]].coin.color == "blue") {
+                                    p2.specialcoincount[2] ++;
+                                }
+                                else if (cards[2][currentcards[2][3]].coin.color == "black") {
+                                    p2.specialcoincount[3] ++;
+                                }
+                                else if (cards[2][currentcards[2][3]].coin.color == "white") {
+                                    p2.specialcoincount[4] ++;
+                                }
+
+                                for (int i = 0; i < 5; i++) {
+                                    p2.coincount[i] -= cards[2][currentcards[2][3]].price[i];
+                                    if (p1.coincount[i] < 0)
+                                    p2.coincount[i] = 0;
+                                }
+                                green.count += cards[2][currentcards[2][3]].price[0];
+                                red.count += cards[2][currentcards[2][3]].price[1];
+                                blue.count += cards[2][currentcards[2][3]].price[2];
+                                black.count += cards[2][currentcards[2][3]].price[3];
+                                white.count += cards[2][currentcards[2][3]].price[4];
+
+                                green.setslotText(button0);
+                                red.setslotText(button1);
+                                blue.setslotText(button2);
+                                black.setslotText(button3);
+                                white.setslotText(button4);
+
+                                p2.point += cards[2][currentcards[2][3]].getPoint();
+                                if (next[2] <= 14) {
+                                    visitlabel[2][3] = false;
+                                    currentcards[2][3] = next[2];
+                                    updateCard(cards[2][next[2]]);
+                                    next[2]++;
+                                }
+                                else {
+                                    cellPanel2.remove(lev2card4);
+                                    cellPanel2.remove(lev2button4);
+                                    cellPanel2.remove(lev2Res4);
+                                }
+                            }
+                        }
+
+                        if (e.getSource() == lev3button1){
+                            for (int i =0;i < 5;i++){
+                                if ((p2.specialcoincount[i] + p2.coincount[i]) < cards[3][currentcards[3][0]].price[i])
+                                    sw = true;
+                                else
+                                    continue;
+                            }
+                            if (sw == true){
+                                showMessageDialog(null , "You cant buy this card");
+                            }
+                            else{
+                                if (cards[3][currentcards[3][0]].coin.color == "green"){
+                                    p2.specialcoincount[0] ++;
+                                }
+                                else if (cards[3][currentcards[3][0]].coin.color == "red") {
+                                    p2.specialcoincount[1] ++;
+                                }
+                                else if (cards[3][currentcards[3][0]].coin.color == "blue") {
+                                    p2.specialcoincount[2] ++;
+                                }
+                                else if (cards[3][currentcards[3][0]].coin.color == "black") {
+                                    p2.specialcoincount[3] ++;
+                                }
+                                else if (cards[3][currentcards[3][0]].coin.color == "white") {
+                                    p2.specialcoincount[4] ++;
+                                }
+
+                                for (int i = 0; i < 5; i++) {
+                                    p2.coincount[i] -= cards[3][currentcards[3][0]].price[i];
+                                    if (p1.coincount[i] < 0)
+                                    p2.coincount[i] = 0;
+                                }
+                                green.count += cards[3][currentcards[3][0]].price[0];
+                                red.count += cards[3][currentcards[3][0]].price[1];
+                                blue.count += cards[3][currentcards[3][0]].price[2];
+                                black.count += cards[3][currentcards[3][0]].price[3];
+                                white.count += cards[3][currentcards[3][0]].price[4];
+
+                                green.setslotText(button0);
+                                red.setslotText(button1);
+                                blue.setslotText(button2);
+                                black.setslotText(button3);
+                                white.setslotText(button4);
+
+                                p2.point += cards[3][currentcards[3][0]].getPoint();
+                                if (next[3] <= 14) {
+                                    visitlabel[3][0] = false;
+                                    currentcards[3][0] = next[3];
+                                    updateCard(cards[3][next[3]]);
+                                    next[3]++;
+                                }
+                                else {
+                                    cellPanel3.remove(lev3card1);
+                                    cellPanel3.remove(lev3button1);
+                                    cellPanel3.remove(lev3Res1);
+                                }
+                            }
+                        }
+
+                        else if (e.getSource() == lev3button2){
+                            for (int i =0;i < 5;i++){
+                                if ((p2.specialcoincount[i] + p2.coincount[i]) < cards[3][currentcards[3][1]].price[i])
+                                    sw = true;
+                                else
+                                    continue;
+                            }
+                            if (sw == true){
+                                showMessageDialog(null , "You cant buy this card");
+                            }
+                            else{
+                                if (cards[3][currentcards[3][1]].coin.color == "green"){
+                                    p2.specialcoincount[0] ++;
+                                }
+                                else if (cards[3][currentcards[3][1]].coin.color == "red") {
+                                    p2.specialcoincount[1] ++;
+                                }
+                                else if (cards[3][currentcards[3][1]].coin.color == "blue") {
+                                    p2.specialcoincount[2] ++;
+                                }
+                                else if (cards[3][currentcards[3][1]].coin.color == "black") {
+                                    p2.specialcoincount[3] ++;
+                                }
+                                else if (cards[3][currentcards[3][1]].coin.color == "white") {
+                                    p2.specialcoincount[4] ++;
+                                }
+
+                                for (int i = 0; i < 5; i++) {
+                                    p2.coincount[i] -= cards[3][currentcards[3][1]].price[i];
+                                    if (p1.coincount[i] < 0)
+                                    p2.coincount[i] = 0;
+                                }
+                                green.count += cards[3][currentcards[3][1]].price[0];
+                                red.count += cards[3][currentcards[3][1]].price[1];
+                                blue.count += cards[3][currentcards[3][1]].price[2];
+                                black.count += cards[3][currentcards[3][1]].price[3];
+                                white.count += cards[3][currentcards[3][1]].price[4];
+
+                                green.setslotText(button0);
+                                red.setslotText(button1);
+                                blue.setslotText(button2);
+                                black.setslotText(button3);
+                                white.setslotText(button4);
+
+                                p2.point += cards[3][currentcards[3][1]].getPoint();
+                                if (next[3] <=14) {
+                                    visitlabel[3][1] = false;
+                                    currentcards[3][1] = next[3];
+                                    updateCard(cards[3][next[3]]);
+                                    next[3]++;
+                                }
+                                else {
+                                    cellPanel3.remove(lev3card2);
+                                    cellPanel3.remove(lev3button2);
+                                    cellPanel3.remove(lev3Res2);
+                                }
+                            }
+                        }
+
+                        if (e.getSource() == lev3button3){
+                            for (int i =0;i < 5;i++){
+                                if ((p2.specialcoincount[i] + p2.coincount[i]) < cards[3][currentcards[3][2]].price[i])
+                                    sw = true;
+                                else
+                                    continue;
+                            }
+                            if (sw == true){
+                                showMessageDialog(null , "You cant buy this card");
+                            }
+                            else{
+                                if (cards[3][currentcards[3][2]].coin.color == "green"){
+                                    p2.specialcoincount[0] ++;
+                                }
+                                else if (cards[3][currentcards[3][2]].coin.color == "red") {
+                                    p2.specialcoincount[1] ++;
+                                }
+                                else if (cards[3][currentcards[3][2]].coin.color == "blue") {
+                                    p2.specialcoincount[2] ++;
+                                }
+                                else if (cards[3][currentcards[3][2]].coin.color == "black") {
+                                    p2.specialcoincount[3] ++;
+                                }
+                                else if (cards[3][currentcards[3][2]].coin.color == "white") {
+                                    p2.specialcoincount[4] ++;
+                                }
+
+                                for (int i = 0; i < 5; i++) {
+                                    p2.coincount[i] -= cards[3][currentcards[3][2]].price[i];
+                                    if (p1.coincount[i] < 0)
+                                    p2.coincount[i] = 0;
+                                }
+                                green.count += cards[3][currentcards[3][2]].price[0];
+                                red.count += cards[3][currentcards[3][2]].price[1];
+                                blue.count += cards[3][currentcards[3][2]].price[2];
+                                black.count += cards[3][currentcards[3][2]].price[3];
+                                white.count += cards[3][currentcards[3][2]].price[4];
+
+                                green.setslotText(button0);
+                                red.setslotText(button1);
+                                blue.setslotText(button2);
+                                black.setslotText(button3);
+                                white.setslotText(button4);
+
+                                p2.point += cards[3][currentcards[3][2]].getPoint();
+                                if (next[3] <= 14) {
+                                    visitlabel[3][2] = false;
+                                    currentcards[3][2] = next[3];
+                                    updateCard(cards[3][next[3]]);
+                                    next[3]++;
+                                }
+                                else {
+                                    cellPanel3.remove(lev3card3);
+                                    cellPanel3.remove(lev3button3);
+                                    cellPanel3.remove(lev3Res3);
+                                }
+                            }
+                        }
+
+                        if (e.getSource() == lev3button4){
+                            for (int i =0;i < 5;i++){
+                                if ((p2.specialcoincount[i] + p2.coincount[i]) < cards[3][currentcards[3][3]].price[i])
+                                    sw = true;
+                                else
+                                    continue;
+                            }
+                            if (sw == true){
+                                showMessageDialog(null , "You cant buy this card");
+                            }
+                            else{
+                                if (cards[3][currentcards[3][3]].coin.color == "green"){
+                                    p2.specialcoincount[0] ++;
+                                }
+                                else if (cards[3][currentcards[3][3]].coin.color == "red") {
+                                    p2.specialcoincount[1] ++;
+                                }
+                                else if (cards[3][currentcards[3][3]].coin.color == "blue") {
+                                    p2.specialcoincount[2] ++;
+                                }
+                                else if (cards[3][currentcards[3][3]].coin.color == "black") {
+                                    p2.specialcoincount[3] ++;
+                                }
+                                else if (cards[3][currentcards[3][3]].coin.color == "white") {
+                                    p2.specialcoincount[4] ++;
+                                }
+
+                                for (int i = 0; i < 5; i++) {
+                                    p2.coincount[i] -= cards[3][currentcards[3][3]].price[i];
+                                    if (p1.coincount[i] < 0)
+                                    p2.coincount[i] = 0;
+                                }
+                                green.count += cards[3][currentcards[3][3]].price[0];
+                                red.count += cards[3][currentcards[3][3]].price[1];
+                                blue.count += cards[3][currentcards[3][3]].price[2];
+                                black.count += cards[3][currentcards[3][3]].price[3];
+                                white.count += cards[3][currentcards[3][3]].price[4];
+
+                                green.setslotText(button0);
+                                red.setslotText(button1);
+                                blue.setslotText(button2);
+                                black.setslotText(button3);
+                                white.setslotText(button4);
+
+                                p2.point += cards[3][currentcards[3][3]].getPoint();
+                                if (next[3] <= 14) {
+                                    visitlabel[3][3] = false;
+                                    currentcards[3][3] = next[3];
+                                    updateCard(cards[3][next[3]]);
+                                    next[3]++;
+                                }
+                                else {
+                                    cellPanel3.remove(lev3card4);
+                                    cellPanel3.remove(lev3button4);
+                                    cellPanel3.remove(lev3Res4);
+                                }
                             }
                         }
                     }
@@ -1331,6 +2130,369 @@ public class Card {
             lev3button2.addActionListener(lev1cardlistener);
             lev3button3.addActionListener(lev1cardlistener);
             lev3button4.addActionListener(lev1cardlistener);
+        }
+
+        public static void ReserveCards(Player p1 , Player p2 , boolean [] turn , Card cards[][], JLabel P1label , JLabel P2label ,int next[]){
+            ActionListener Reservelistener = new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if (turn[0]){
+                        if (e.getSource() == lev1Res1){
+                            if (p1.checkReserve() == -1){
+                                showMessageDialog(null , "You cant reserve more than 3 cards !");
+                            }
+                            else {
+                                p1.ReserveCards[p1.checkReserve()] = currentcards[1][0];
+                                visitlabel[1][0] = false;
+                                currentcards[1][0] = next[1];
+                                updateCard(cards[1][next[1]]);
+                                next[1]++;
+                                p1.specialcoincount[5]++;
+                                turn[0] = false;
+                            }
+                        }
+                        if (e.getSource() == lev1Res2){
+                            if (p1.checkReserve() == -1){
+                                showMessageDialog(null , "You cant reserve more than 3 cards !");
+                            }
+                            else {
+                                p1.ReserveCards[p1.checkReserve()] = currentcards[1][1];
+                                visitlabel[1][1] = false;
+                                currentcards[1][1] = next[1];
+                                updateCard(cards[1][next[1]]);
+                                next[1]++;
+                                p1.specialcoincount[5]++;
+                                turn[0] = false;
+                            }
+                        }
+                        if (e.getSource() == lev1Res3){
+                            if (p1.checkReserve() == -1){
+                                showMessageDialog(null , "You cant reserve more than 3 cards !");
+                            }
+                            else {
+                                p1.ReserveCards[p1.checkReserve()] = currentcards[1][2];
+                                visitlabel[1][2] = false;
+                                currentcards[1][2] = next[1];
+                                updateCard(cards[1][next[1]]);
+                                next[1]++;
+                                p1.specialcoincount[5]++;
+                                turn[0] = false;
+                            }
+                        }
+                        if (e.getSource() == lev1Res4){
+                            if (p1.checkReserve() == -1){
+                                showMessageDialog(null , "You cant reserve more than 3 cards !");
+                            }
+                            else {
+                                p1.ReserveCards[p1.checkReserve()] = currentcards[1][3];
+                                visitlabel[1][3] = false;
+                                currentcards[1][3] = next[1];
+                                updateCard(cards[1][next[1]]);
+                                next[1]++;
+                                p1.specialcoincount[5]++;
+                                turn[0] = false;
+                            }
+                        }
+                        if (e.getSource() == lev2Res1){
+                            if (p1.checkReserve() == -1){
+                                showMessageDialog(null , "You cant reserve more than 3 cards !");
+                            }
+                            else {
+                                p1.ReserveCards[p1.checkReserve()] = currentcards[2][0];
+                                visitlabel[2][0] = false;
+                                currentcards[2][0] = next[2];
+                                updateCard(cards[2][next[2]]);
+                                next[2]++;
+                                p1.specialcoincount[5]++;
+                                turn[0] = false;
+                            }
+                        }
+                        if (e.getSource() == lev2Res2){
+                            if (p1.checkReserve() == -1){
+                                showMessageDialog(null , "You cant reserve more than 3 cards !");
+                            }
+                            else {
+                                p1.ReserveCards[p1.checkReserve()] = currentcards[2][1];
+                                visitlabel[2][1] = false;
+                                currentcards[2][1] = next[2];
+                                updateCard(cards[2][next[2]]);
+                                next[2]++;
+                                p1.specialcoincount[5]++;
+                                turn[0] = false;
+                            }
+                        }
+                        if (e.getSource() == lev2Res3){
+                            if (p1.checkReserve() == -1){
+                                showMessageDialog(null , "You cant reserve more than 3 cards !");
+                            }
+                            else {
+                                p1.ReserveCards[p1.checkReserve()] = currentcards[2][2];
+                                visitlabel[2][2] = false;
+                                currentcards[2][2] = next[2];
+                                updateCard(cards[2][next[2]]);
+                                next[2]++;
+                                p1.specialcoincount[5]++;
+                                turn[0] = false;
+                            }
+                        }
+                        if (e.getSource() == lev2Res4){
+                            if (p1.checkReserve() == -1){
+                                showMessageDialog(null , "You cant reserve more than 3 cards !");
+                            }
+                            else {
+                                p1.ReserveCards[p1.checkReserve()] = currentcards[2][3];
+                                visitlabel[2][3] = false;
+                                currentcards[2][3] = next[2];
+                                updateCard(cards[2][next[2]]);
+                                next[2]++;
+                                p1.specialcoincount[5]++;
+                                turn[0] = false;
+                            }
+                        }
+                        if (e.getSource() == lev3Res1){
+                            if (p1.checkReserve() == -1){
+                                showMessageDialog(null , "You cant reserve more than 3 cards !");
+                            }
+                            else {
+                                p1.ReserveCards[p1.checkReserve()] = currentcards[3][0];
+                                visitlabel[3][0] = false;
+                                currentcards[3][0] = next[3];
+                                updateCard(cards[3][next[3]]);
+                                next[3]++;
+                                p1.specialcoincount[5]++;
+                                turn[0] = false;
+                            }
+                        }
+                        if (e.getSource() == lev3Res2){
+                            if (p1.checkReserve() == -1){
+                                showMessageDialog(null , "You cant reserve more than 3 cards !");
+                            }
+                            else {
+                                p1.ReserveCards[p1.checkReserve()] = currentcards[3][1];
+                                visitlabel[3][1] = false;
+                                currentcards[3][1] = next[3];
+                                updateCard(cards[3][next[3]]);
+                                next[3]++;
+                                p1.specialcoincount[5]++;
+                                turn[0] = false;
+                            }
+                        }
+                        if (e.getSource() == lev3Res3){
+                            if (p1.checkReserve() == -1){
+                                showMessageDialog(null , "You cant reserve more than 3 cards !");
+                            }
+                            else {
+                                p1.ReserveCards[p1.checkReserve()] = currentcards[3][2];
+                                visitlabel[3][2] = false;
+                                currentcards[3][2] = next[3];
+                                updateCard(cards[3][next[3]]);
+                                next[3]++;
+                                p1.specialcoincount[5]++;
+                                turn[0] = false;
+                            }
+                        }
+                        if (e.getSource() == lev3Res4){
+                            if (p1.checkReserve() == -1){
+                                showMessageDialog(null , "You cant reserve more than 3 cards !");
+                            }
+                            else {
+                                p1.ReserveCards[p1.checkReserve()] = currentcards[3][1];
+                                visitlabel[3][3] = false;
+                                currentcards[3][3] = next[3];
+                                updateCard(cards[3][next[3]]);
+                                next[3]++;
+                                p1.specialcoincount[5]++;
+                                turn[0] = false;
+                            }
+                        }
+                    }
+
+                    else if (!turn[0]){
+                        if (e.getSource() == lev1Res1){
+                            if (p2.checkReserve() == -1){
+                                showMessageDialog(null , "You cant reserve more than 3 cards !");
+                            }
+                            else {
+                                p2.ReserveCards[p2.checkReserve()] = currentcards[1][0];
+                                visitlabel[1][0] = false;
+                                currentcards[1][0] = next[1];
+                                updateCard(cards[1][next[1]]);
+                                next[1]++;
+                                p2.specialcoincount[5]++;
+                                turn[0] = true;
+                            }
+                        }
+                        if (e.getSource() == lev1Res2){
+                            if (p2.checkReserve() == -1){
+                                showMessageDialog(null , "You cant reserve more than 3 cards !");
+                            }
+                            else {
+                                p2.ReserveCards[p2.checkReserve()] = currentcards[1][1];
+                                visitlabel[1][1] = false;
+                                currentcards[1][1] = next[1];
+                                updateCard(cards[1][next[1]]);
+                                next[1]++;
+                                p2.specialcoincount[5]++;
+                                turn[0] = true;
+                            }
+                        }
+                        if (e.getSource() == lev1Res3){
+                            if (p2.checkReserve() == -1){
+                                showMessageDialog(null , "You cant reserve more than 3 cards !");
+                            }
+                            else {
+                                p2.ReserveCards[p2.checkReserve()] = currentcards[1][2];
+                                visitlabel[1][2] = false;
+                                currentcards[1][2] = next[1];
+                                updateCard(cards[1][next[1]]);
+                                next[1]++;
+                                p2.specialcoincount[5]++;
+                                turn[0] = true;
+                            }
+                        }
+                        if (e.getSource() == lev1Res4){
+                            if (p2.checkReserve() == -1){
+                                showMessageDialog(null , "You cant reserve more than 3 cards !");
+                            }
+                            else {
+                                p2.ReserveCards[p2.checkReserve()] = currentcards[1][3];
+                                visitlabel[1][3] = false;
+                                currentcards[1][3] = next[1];
+                                updateCard(cards[1][next[1]]);
+                                next[1]++;
+                                p2.specialcoincount[5]++;
+                                turn[0] = true;
+                            }
+                        }
+                        if (e.getSource() == lev2Res1){
+                            if (p2.checkReserve() == -1){
+                                showMessageDialog(null , "You cant reserve more than 3 cards !");
+                            }
+                            else {
+                                p2.ReserveCards[p2.checkReserve()] = currentcards[2][0];
+                                visitlabel[2][0] = false;
+                                currentcards[2][0] = next[2];
+                                updateCard(cards[2][next[2]]);
+                                next[2]++;
+                                p2.specialcoincount[5]++;
+                                turn[0] = true;
+                            }
+                        }
+                        if (e.getSource() == lev2Res2){
+                            if (p2.checkReserve() == -1){
+                                showMessageDialog(null , "You cant reserve more than 3 cards !");
+                            }
+                            else {
+                                p2.ReserveCards[p2.checkReserve()] = currentcards[2][1];
+                                visitlabel[2][1] = false;
+                                currentcards[2][1] = next[2];
+                                updateCard(cards[2][next[2]]);
+                                next[2]++;
+                                p2.specialcoincount[5]++;
+                                turn[0] = true;
+                            }
+                        }
+                        if (e.getSource() == lev2Res3){
+                            if (p2.checkReserve() == -1){
+                                showMessageDialog(null , "You cant reserve more than 3 cards !");
+                            }
+                            else {
+                                p2.ReserveCards[p2.checkReserve()] = currentcards[2][2];
+                                visitlabel[2][2] = false;
+                                currentcards[2][2] = next[2];
+                                updateCard(cards[2][next[2]]);
+                                next[2]++;
+                                p2.specialcoincount[5]++;
+                                turn[0] = true;
+                            }
+                        }
+                        if (e.getSource() == lev2Res4){
+                            if (p2.checkReserve() == -1){
+                                showMessageDialog(null , "You cant reserve more than 3 cards !");
+                            }
+                            else {
+                                p2.ReserveCards[p2.checkReserve()] = currentcards[2][3];
+                                visitlabel[2][3] = false;
+                                currentcards[2][3] = next[2];
+                                updateCard(cards[2][next[2]]);
+                                next[2]++;
+                                p2.specialcoincount[5]++;
+                                turn[0] = true;
+                            }
+                        }
+                        if (e.getSource() == lev3Res1){
+                            if (p2.checkReserve() == -1){
+                                showMessageDialog(null , "You cant reserve more than 3 cards !");
+                            }
+                            else {
+                                p2.ReserveCards[p2.checkReserve()] = currentcards[3][0];
+                                visitlabel[3][0] = false;
+                                currentcards[3][0] = next[3];
+                                updateCard(cards[3][next[3]]);
+                                next[3]++;
+                                p2.specialcoincount[5]++;
+                                turn[0] = true;
+                            }
+                        }
+                        if (e.getSource() == lev3Res2){
+                            if (p2.checkReserve() == -1){
+                                showMessageDialog(null , "You cant reserve more than 3 cards !");
+                            }
+                            else {
+                                p2.ReserveCards[p2.checkReserve()] = currentcards[3][1];
+                                visitlabel[3][1] = false;
+                                currentcards[3][1] = next[3];
+                                updateCard(cards[3][next[3]]);
+                                next[3]++;
+                                p2.specialcoincount[5]++;
+                                turn[0] = true;
+                            }
+                        }
+                        if (e.getSource() == lev3Res3){
+                            if (p2.checkReserve() == -1){
+                                showMessageDialog(null , "You cant reserve more than 3 cards !");
+                            }
+                            else {
+                                p2.ReserveCards[p2.checkReserve()] = currentcards[3][2];
+                                visitlabel[3][2] = false;
+                                currentcards[3][2] = next[3];
+                                updateCard(cards[3][next[3]]);
+                                next[3]++;
+                                p2.specialcoincount[5]++;
+                                turn[0] = true;
+                            }
+                        }
+                        if (e.getSource() == lev3Res4){
+                            if (p2.checkReserve() == -1){
+                                showMessageDialog(null , "You cant reserve more than 3 cards !");
+                            }
+                            else {
+                                p2.ReserveCards[p2.checkReserve()] = currentcards[3][1];
+                                visitlabel[3][3] = false;
+                                currentcards[3][3] = next[3];
+                                updateCard(cards[3][next[3]]);
+                                next[3]++;
+                                p2.specialcoincount[5]++;
+                                turn[0] = true;
+                            }
+                        }
+                    }
+                    setplayertext(P1label, p1, 1);
+                    setplayertext(P2label , p2 , 2);
+                }
+            };
+
+            lev1Res1.addActionListener(Reservelistener);
+            lev1Res2.addActionListener(Reservelistener);
+            lev1Res3.addActionListener(Reservelistener);
+
+            lev2Res1.addActionListener(Reservelistener);
+            lev2Res2.addActionListener(Reservelistener);
+            lev2Res3.addActionListener(Reservelistener);
+
+            lev3Res1.addActionListener(Reservelistener);
+            lev3Res2.addActionListener(Reservelistener);
+            lev3Res3.addActionListener(Reservelistener);
         }
     }
 

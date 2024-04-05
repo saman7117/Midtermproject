@@ -4,35 +4,40 @@ import cardcoin.*;
 
 import javax.swing.*;
 
+import java.util.Arrays;
+
 import static javax.swing.JOptionPane.showMessageDialog;
 
 public class SlotMachine {
     String color;
-    Coin coin[] = new Coin[4];
+    Coin[] coin = new Coin[4];
     public int count = 4;
+
 
 
     public void drawCoinsFromSameMachine(Player p , int colornum) {
         if (this.count >= 2){
             this.count -=2;
-        p.coincount[colornum] +=2;}
+        p.coincount[colornum] +=2;
+        }
         else {
             showMessageDialog(null , "Not enough coin to draw :(");
         }
     }
 
-    public void drawCoinsFromDifferentMachines(Player p , int colornum , int count , boolean turn) {
-        if (count < 3) {
+    public void drawCoinsFromDifferentMachines(Player p , int colornum , int []count , boolean []turn , boolean[] status) {
+        if (count[0] < 3) {
             if (this.count >= 1) {
                 this.count--;
                 p.coincount[colornum]++;
+                status[colornum] = true;
             } else
                 showMessageDialog(null, "Not enough coin to draw");
         }
-       else  if (count == 3)
-            turn = !turn;
-       return;
-
+       else  if (count[0] == 3){
+            Arrays.fill(status , false);
+            count[0] = -1;
+            turn[0] = !turn[0];}
     }
 
     public boolean checkfullslotmachine (SlotMachine blue , SlotMachine green , SlotMachine white , SlotMachine black){
