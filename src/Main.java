@@ -6,10 +6,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 
 import static cardcoin.Card.*;
 import static javax.swing.JOptionPane.showMessageDialog;
-import static playerslot.Player.setplayertext;
+import static playerslot.Player.*;
 
 public class Main  {
 
@@ -30,7 +31,7 @@ public class Main  {
         JPanel P1panel = new JPanel();
         JPanel P2panel = new JPanel();
         JPanel Storepanel = new JPanel(new GridLayout(4, 4, 20, 0));
-        JPanel tablepanel = new JPanel();
+        JPanel tablepanel = new JPanel(new BorderLayout());
         tablepanel.setLayout(null);
 
         Card claw = new Card(0);
@@ -135,7 +136,7 @@ public class Main  {
         }
 
         for (int i = 0; i < 3; i++) {
-            int[] passprice = new int[2];
+            int [] passprice = new int[2];
             k = 0;
             for (j = 0; j < 5; j++) {
                 if (cards[0][i].price[j] != 0) {
@@ -146,6 +147,9 @@ public class Main  {
 
             cards[0][i].setCardlevel0ocation(i, cards[0][i].getPoint(), cards[0][i].colors[0], cards[0][i].colors[1], passprice[0], passprice[1]);
         }
+
+
+
 
         P1label.setForeground(Color.BLACK);
         P2label.setForeground(Color.BLACK);
@@ -159,6 +163,11 @@ public class Main  {
         frame.add(Storepanel, BorderLayout.EAST);
         frame.add(tablepanel, BorderLayout.CENTER);
 
+        JLabel CurrentTurn = new JLabel();
+        CurrentTurn.setText("Turn : Player 1");
+        CurrentTurn.setBackground(Color.RED);
+        CurrentTurn.setForeground(Color.CYAN);
+        CurrentTurn.setBounds(0 , 100 , 200 , 200);
 
         JButton button0 = new JButton();
         JButton button1 = new JButton();
@@ -233,10 +242,20 @@ public class Main  {
         P2panel.add(P2Res1);
         P2panel.add(P2Res2);
         P2panel.add(P2Res3);
-
+        player1.coincount[0] = 140;
+        player1.coincount[1] = 140;
+        player1.coincount[2] = 140;
+        player1.coincount[3] = 140;
+        player1.coincount[4] = 140;
+        player1.specialcoincount[0] = 4;
+        player1.specialcoincount[1] = 4;
+        player1.specialcoincount[2] = 4;
+        player1.specialcoincount[3] = 4;
+        player1.specialcoincount[4] = 4;
         P1draw2.setBackground(Color.RED);
         tablepanel.add(P1draw2, BorderLayout.SOUTH);
         tablepanel.add(P2draw2);
+        tablepanel.add(CurrentTurn);
         boolean[] playerturn = {true};  // true = P1  ,  false = P2
         final int[] count = {-1};
         boolean [] SlotStatus = new boolean[5];  //  green = 0     red = 1      blue = 2     black = 3    white = 4
@@ -246,64 +265,79 @@ public class Main  {
                 boolean check = false;
                 if (playerturn[0]) {
                     if (P1draw2.isSelected() == false) {
-
-
+                        SetFalse();
+                        P1draw2.setEnabled(false);
                         if (e.getSource() == button0) {
+
                             if (!SlotStatus[0]) {
+
                                 count[0]++;
-                                green.drawCoinsFromDifferentMachines(player1, 0, count, playerturn, SlotStatus);
+                                green.drawCoinsFromDifferentMachines(player1, 0, count, playerturn, SlotStatus , P1draw2);
                                 green.setslotText(button0);
                             }
                         } else if (e.getSource() == button1) {
                             if (!SlotStatus[1]) {
+
                                 count[0]++;
-                                red.drawCoinsFromDifferentMachines(player1, 1, count, playerturn, SlotStatus);
+                                red.drawCoinsFromDifferentMachines(player1, 1, count, playerturn, SlotStatus , P1draw2);
                                 red.setslotText(button1);
                             }
                         } else if (e.getSource() == button2) {
                             if (!SlotStatus[2]) {
+
                                 count[0]++;
-                                blue.drawCoinsFromDifferentMachines(player1, 2, count, playerturn, SlotStatus);
+                                blue.drawCoinsFromDifferentMachines(player1, 2, count, playerturn, SlotStatus , P1draw2);
                                 blue.setslotText(button2);
                             }
                         } else if (e.getSource() == button3) {
                             if (!SlotStatus[3]) {
+
                                 count[0]++;
-                                black.drawCoinsFromDifferentMachines(player1, 3, count, playerturn, SlotStatus);
+                                black.drawCoinsFromDifferentMachines(player1, 3, count, playerturn, SlotStatus , P1draw2);
                                 black.setslotText(button3);
                             }
                         } else if (e.getSource() == button4) {
                             if (!SlotStatus[4]) {
+
                                 count[0]++;
-                                white.drawCoinsFromDifferentMachines(player1, 4, count, playerturn, SlotStatus);
+                                white.drawCoinsFromDifferentMachines(player1, 4, count, playerturn, SlotStatus , P1draw2);
                                 white.setslotText(button4);
                             }
                         }
 
                     } else if (P1draw2.isSelected() == true) {
                         if (red.checkfullslotmachine(blue, green, white, black) == true) {
-                            check = true;
-                            //P1draw2.setSelected(true);
-                            if (e.getSource() == button0) {
+                            SetFalse();
+                            if (e.getSource() == button0 && green.checkcurrentslotmachine()) {
                                 green.drawCoinsFromSameMachine(player1, 0);
                                 button0.setText(green.count + "/4");
+                                P1draw2.setSelected(false);
                                 playerturn[0] = false;
-                            } else if (e.getSource() == button1) {
+                                SetTrue();
+                            } else if (e.getSource() == button1 && red.checkcurrentslotmachine()) {
                                 red.drawCoinsFromSameMachine(player1, 1);
                                 button1.setText(red.count + "/4");
+                                P1draw2.setSelected(false);
                                 playerturn[0] = false;
-                            } else if (e.getSource() == button2) {
+                                SetTrue();
+                            } else if (e.getSource() == button2 && blue.checkcurrentslotmachine()) {
                                 blue.drawCoinsFromSameMachine(player1, 2);
                                 button2.setText(blue.count + "/4");
+                                P1draw2.setSelected(false);
                                 playerturn[0] = false;
-                            } else if (e.getSource() == button3) {
+                                SetTrue();
+                            } else if (e.getSource() == button3 && black.checkcurrentslotmachine()) {
                                 black.drawCoinsFromSameMachine(player1, 3);
                                 button3.setText(black.count + "/4");
+                                P1draw2.setSelected(false);
                                 playerturn[0] = false;
-                            } else if (e.getSource() == button4) {
+                                SetTrue();
+                            } else if (e.getSource() == button4 && white.checkcurrentslotmachine()) {
                                 white.drawCoinsFromSameMachine(player1, 4);
                                 button4.setText(white.count + "/4");
+                                P1draw2.setSelected(false);
                                 playerturn[0] = false;
+                                SetTrue();
                             }
 
                         } else if (red.checkfullslotmachine(blue, green, white, black) == false) {
@@ -315,56 +349,77 @@ public class Main  {
 
                     P2draw2.setSelected(false);
                     setplayertext(P1label, player1, 1);
-                } else if (!playerturn[0]) {
+                    ShowTurn(playerturn , CurrentTurn);
+                }
+                else if (!playerturn[0]) {
                     if (P2draw2.isSelected() == false) {
 
-
+                        P2draw2.setEnabled(false);
+                        SetFalse();
                         if (e.getSource() == button0) {
-                            count[0]++;
-                            green.drawCoinsFromDifferentMachines(player2, 0, count, playerturn , SlotStatus);
-                            green.setslotText(button0);
-
+                            if (!SlotStatus[0]) {
+                                count[0]++;
+                                green.drawCoinsFromDifferentMachines(player2, 0, count, playerturn, SlotStatus , P2draw2);
+                                green.setslotText(button0);
+                            }
                         } else if (e.getSource() == button1) {
-                            count[0]++;
-                            red.drawCoinsFromDifferentMachines(player2, 1, count, playerturn , SlotStatus);
-                            red.setslotText(button1);
+                            if (!SlotStatus[1]) {
+                                count[0]++;
+                                red.drawCoinsFromDifferentMachines(player2, 1, count, playerturn, SlotStatus , P2draw2);
+                                red.setslotText(button1);
+                            }
                         } else if (e.getSource() == button2) {
-                            count[0]++;
-                            blue.drawCoinsFromDifferentMachines(player2, 2, count, playerturn , SlotStatus);
-                            blue.setslotText(button2);
+                            if (!SlotStatus[2]) {
+                                count[0]++;
+                                blue.drawCoinsFromDifferentMachines(player2, 2, count, playerturn, SlotStatus , P2draw2);
+                                blue.setslotText(button2);
+                            }
                         } else if (e.getSource() == button3) {
-                            count[0]++;
-                            black.drawCoinsFromDifferentMachines(player2, 3, count, playerturn , SlotStatus);
-                            black.setslotText(button3);
+                            if (!SlotStatus[3]) {
+                                count[0]++;
+                                black.drawCoinsFromDifferentMachines(player2, 3, count, playerturn, SlotStatus , P2draw2);
+                                black.setslotText(button3);
+                            }
                         } else if (e.getSource() == button4) {
-                            count[0]++;
-                            white.drawCoinsFromDifferentMachines(player2, 4, count, playerturn , SlotStatus);
-                            white.setslotText(button4);
+                            if (!SlotStatus[4]) {
+                                count[0]++;
+                                white.drawCoinsFromDifferentMachines(player2, 4, count, playerturn, SlotStatus , P2draw2);
+                                white.setslotText(button4);
+                            }
                         }
                     } else if (P2draw2.isSelected() == true) {
                         if (red.checkfullslotmachine(blue, green, white, black) == true) {
-                            check = true;
-                            //P1draw2.setSelected(true);
-                            if (e.getSource() == button0) {
+                            SetFalse();
+                            if (e.getSource() == button0 && green.checkcurrentslotmachine()) {
                                 green.drawCoinsFromSameMachine(player2, 0);
                                 button0.setText(green.count + "/4");
+                                P2draw2.setSelected(false);
                                 playerturn[0] = true;
-                            } else if (e.getSource() == button1) {
+                                SetTrue();
+                            } else if (e.getSource() == button1 && red.checkcurrentslotmachine()) {
                                 red.drawCoinsFromSameMachine(player2, 1);
                                 button1.setText(red.count + "/4");
+                                P2draw2.setSelected(false);
                                 playerturn[0] = true;
-                            } else if (e.getSource() == button2) {
+                                SetTrue();
+                            } else if (e.getSource() == button2 && blue.checkcurrentslotmachine()) {
                                 blue.drawCoinsFromSameMachine(player2, 2);
                                 button2.setText(blue.count + "/4");
+                                P2draw2.setSelected(false);
                                 playerturn[0] = true;
-                            } else if (e.getSource() == button3) {
+                                SetTrue();
+                            } else if (e.getSource() == button3 && black.checkcurrentslotmachine()) {
                                 black.drawCoinsFromSameMachine(player2, 3);
                                 button3.setText(black.count + "/4");
+                                P2draw2.setSelected(false);
                                 playerturn[0] = true;
-                            } else if (e.getSource() == button4) {
+                                SetTrue();
+                            } else if (e.getSource() == button4 && white.checkcurrentslotmachine()) {
                                 white.drawCoinsFromSameMachine(player2, 4);
                                 button4.setText(white.count + "/4");
+                                P2draw2.setSelected(false);
                                 playerturn[0] = true;
+                                SetTrue();
                             }
 
                         } else if (red.checkfullslotmachine(blue, green, white, black) == false) {
@@ -375,6 +430,7 @@ public class Main  {
                     }
                     P2draw2.setSelected(false);
                     setplayertext(P2label, player2, 2);
+                    ShowTurn(playerturn , CurrentTurn);
                 }
             }
         };
@@ -386,7 +442,7 @@ public class Main  {
 
         int[] addslot;
         addslot = new int[5];
-        BuyCards(player1, player2, playerturn , cards, P1label, Next, green, red, blue, black, white, button0, button1, button2, button3, button4);
+        BuyCards(player1, player2, playerturn, cards, P1label, Next, green, red, blue, black, white, button0, button1, button2, button3, button4 , frame);
         ReserveCards(player1, player2, playerturn, cards, P1label ,P2label , Next);
 
         ActionListener BuyReserveCards = new ActionListener() {
@@ -395,7 +451,6 @@ public class Main  {
                 boolean sw = false;
                 if (e.getSource() == P1Res1) {
                     for (int i = 0; i < 5; i++) {
-                        System.out.println(player1.ReserveCards[0]);
                         if ((player1.specialcoincount[i] + player1.coincount[i]) < cards[1][player1.ReserveCards[0]].price[i])
                             sw = true;
                     }
@@ -444,9 +499,7 @@ public class Main  {
 
 
 
-
         P1Res1.addActionListener(BuyReserveCards);
-
 
 
         button0.addActionListener(slotlistener);
@@ -457,6 +510,7 @@ public class Main  {
         P1draw2.addActionListener(slotlistener);
 
         frame.setVisible(true);
+        checkwinner(player1 , player2 , frame);
     }
 
 }

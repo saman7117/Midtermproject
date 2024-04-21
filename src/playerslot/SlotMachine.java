@@ -6,6 +6,7 @@ import javax.swing.*;
 
 import java.util.Arrays;
 
+import static cardcoin.Card.SetTrue;
 import static javax.swing.JOptionPane.showMessageDialog;
 
 public class SlotMachine {
@@ -25,7 +26,7 @@ public class SlotMachine {
         }
     }
 
-    public void drawCoinsFromDifferentMachines(Player p , int colornum , int []count , boolean []turn , boolean[] status) {
+    public void drawCoinsFromDifferentMachines(Player p , int colornum , int []count , boolean []turn , boolean[] status , JToggleButton draw2) {
         if (count[0] < 3) {
             if (this.count >= 1) {
                 this.count--;
@@ -37,7 +38,10 @@ public class SlotMachine {
        else  if (count[0] == 3){
             Arrays.fill(status , false);
             count[0] = -1;
-            turn[0] = !turn[0];}
+            turn[0] = !turn[0];
+            draw2.setEnabled(true);
+            SetTrue();
+       }
     }
 
     public boolean checkfullslotmachine (SlotMachine blue , SlotMachine green , SlotMachine white , SlotMachine black){
@@ -45,6 +49,13 @@ public class SlotMachine {
            return true;
        else
            return false;
+    }
+
+    public boolean checkcurrentslotmachine(){
+        if (this.count == 4)
+            return true;
+        else
+            return false;
     }
 
     public void setSlotmachineText (SlotMachine blue , SlotMachine green , SlotMachine white , SlotMachine black , JButton redbutton , JButton greenbutton , JButton bluebutton , JButton whitebutton , JButton blackbutton){

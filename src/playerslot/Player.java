@@ -6,6 +6,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Arrays;
 
+import static javax.swing.JOptionPane.showMessageDialog;
+
 public class Player {
     public static Font playerspec = new Font("varsity_regular" , Font.BOLD , 14);
     public int point;
@@ -13,7 +15,7 @@ public class Player {
     public int[] specialcoincount;
     public int[] ReserveCards;
     public int currentReserve;
-    Card [] cards;
+
 
 
     public Player() {
@@ -23,10 +25,9 @@ public class Player {
         coincount = new int[5]; //  0 = green     1 = red    2 = blue    3 = black     4 = white
         specialcoincount = new int[6]; //  0 = green     1 = red    2 = blue    3 = black     4 = white   5 = Gold
         for (int i = 0; i < 5 ;i ++) {
-            coincount[i] = 50;
+            coincount[i] = 00;
             specialcoincount[i] = 0;
         }
-
     }
 
     public static void setplayertext(JLabel P1label , Player p1 , int playerNum) {
@@ -67,6 +68,26 @@ public class Player {
             }
         }
         return -1;
+    }
+
+    public static void ShowTurn(boolean turn[] , JLabel current){
+        if (turn[0]){
+            current.setText("Turn : Player 1");
+        }
+        else {
+            current.setText("Turn : Player 2");
+        }
+    }
+
+    public static void checkwinner (Player p1 , Player p2 , JFrame frame){
+        if (p1.point == 15){
+            frame.setVisible(false);
+            showMessageDialog(null , "Player 1 is the winner !");
+        }
+        if (p2.point == 15){
+            frame.setVisible(false);
+            showMessageDialog(null , "Player 2 is the winner !");
+        }
     }
 
 }
