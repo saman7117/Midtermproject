@@ -25,9 +25,16 @@ public class Player {
         coincount = new int[5]; //  0 = green     1 = red    2 = blue    3 = black     4 = white
         specialcoincount = new int[6]; //  0 = green     1 = red    2 = blue    3 = black     4 = white   5 = Gold
         for (int i = 0; i < 5 ;i ++) {
-            coincount[i] = 00;
+            coincount[i] = 0;
             specialcoincount[i] = 0;
         }
+    }
+    public int calcutecoincount(){
+        int sum = 0 ;
+        for (int i = 0; i < 5; i++) {
+            sum += this.coincount[i];
+        }
+        return sum;
     }
 
     public static void setplayertext(JLabel P1label , Player p1 , int playerNum) {
@@ -79,14 +86,10 @@ public class Player {
         }
     }
 
-    public static void checkwinner (Player p1 , Player p2 , JFrame frame){
+    public static void checkwinner (Player p1 , JFrame frame){
         if (p1.point == 15){
             frame.setVisible(false);
             showMessageDialog(null , "Player 1 is the winner !");
-        }
-        if (p2.point == 15){
-            frame.setVisible(false);
-            showMessageDialog(null , "Player 2 is the winner !");
         }
     }
 

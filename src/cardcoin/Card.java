@@ -10,8 +10,7 @@ import java.util.Arrays;
 import java.util.Random;
 
 import static javax.swing.JOptionPane.showMessageDialog;
-import static playerslot.Player.checkwinner;
-import static playerslot.Player.setplayertext;
+import static playerslot.Player.*;
 
 public class Card {
     public int[] price;
@@ -48,11 +47,6 @@ public class Card {
     static JPanel cellPanel1 = new JPanel();
     static JPanel cellPanel2 = new JPanel();
     static JPanel cellPanel3 = new JPanel();
-
-    static JButton clawbutton1 = new JButton("Buy");
-    static JButton clawbutton2 = new JButton("Buy");
-    static JButton clawbutton3 = new JButton("Buy");
-
     static JButton lev1button1 = new JButton("Buy");
     static JButton lev1button2 = new JButton("Buy");
     static JButton lev1button3 = new JButton("Buy");
@@ -571,9 +565,6 @@ public class Card {
 
         Color goGreen = new Color(0, 171, 102);
         Color yellow = new Color(165, 124, 0);
-        clawbutton1.setBackground(goGreen);
-        clawbutton2.setBackground(goGreen);
-        clawbutton3.setBackground(goGreen);
 
         lev1button1.setBackground(goGreen);
         lev1button2.setBackground(goGreen);
@@ -606,14 +597,10 @@ public class Card {
         lev3Res4.setBackground(yellow);
 
         cellPanel.add(claw1);
-        cellPanel.add(clawbutton1);
 
         cellPanel.add(claw2);
-        cellPanel.add(clawbutton2);
 
         cellPanel.add(claw3);
-        cellPanel.add(clawbutton3);
-
 
         cellPanel1.setLayout(new BoxLayout(cellPanel1, BoxLayout.LINE_AXIS));
         cellPanel1.setBackground(new Color(139, 0, 0));
@@ -728,7 +715,7 @@ public class Card {
                             addPrize1(cards[0][0], p1);
                             addPrize2(cards[0][1] , p1);
                             addPrize3(cards[0][2] , p1);
-                            checkwinner(p1, p2, frame);
+                            checkwinner(p1, frame);
                             if (next[1] <= 14) {
                                 visitlabel[1][0] = false;
                                 currentcards[1][0] = next[1];
@@ -785,7 +772,7 @@ public class Card {
                             addPrize1(cards[0][0], p1);
                             addPrize2(cards[0][1] , p1);
                             addPrize3(cards[0][2] , p1);
-                            checkwinner(p1, p2, frame);
+                            checkwinner(p1, frame);
                             if (next[1] <= 14) {
                                 visitlabel[1][1] = false;
                                 currentcards[1][1] = next[1];
@@ -841,7 +828,7 @@ public class Card {
                             addPrize1(cards[0][0], p1);
                             addPrize2(cards[0][1] , p1);
                             addPrize3(cards[0][2] , p1);
-                            checkwinner(p1, p2, frame);
+                            checkwinner(p1, frame);
                             if (next[1] <= 14) {
                                 visitlabel[1][2] = false;
                                 currentcards[1][2] = next[1];
@@ -899,7 +886,7 @@ public class Card {
                             addPrize1(cards[0][0], p1);
                             addPrize2(cards[0][1] , p1);
                             addPrize3(cards[0][2] , p1);
-                            checkwinner(p1, p2, frame);
+                            checkwinner(p1, frame);
                             if (next[1] <= 14) {
                                 visitlabel[1][3] = false;
                                 currentcards[1][3] = next[1];
@@ -957,6 +944,7 @@ public class Card {
                             addPrize1(cards[0][0], p1);
                             addPrize2(cards[0][1] , p1);
                             addPrize3(cards[0][2] , p1);
+                            checkwinner(p1 , frame);
                             if (next[2] <= 14) {
                                 visitlabel[2][0] = false;
                                 currentcards[2][0] = next[2];
@@ -2036,7 +2024,7 @@ public class Card {
         lev3button4.addActionListener(lev1cardlistener);
     }
 
-    public static void ReserveCards(Player p1, Player p2, boolean[] turn, Card cards[][], JLabel P1label, JLabel P2label, int next[]) {
+    public static void ReserveCards(Player p1, Player p2, boolean[] turn, Card[][] cards, JLabel P1label, JLabel P2label, int[] next, JLabel currentTurn) {
         ActionListener Reservelistener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -2052,6 +2040,7 @@ public class Card {
                             next[1]++;
                             p1.specialcoincount[5]++;
                             turn[0] = false;
+                            ShowTurn(turn , currentTurn);
                         }
                     }
                     if (e.getSource() == lev1Res2) {
@@ -2065,6 +2054,7 @@ public class Card {
                             next[1]++;
                             p1.specialcoincount[5]++;
                             turn[0] = false;
+                            ShowTurn(turn , currentTurn);
                         }
                     }
                     if (e.getSource() == lev1Res3) {
@@ -2078,6 +2068,7 @@ public class Card {
                             next[1]++;
                             p1.specialcoincount[5]++;
                             turn[0] = false;
+                            ShowTurn(turn , currentTurn);
                         }
                     }
                     if (e.getSource() == lev1Res4) {
@@ -2091,6 +2082,7 @@ public class Card {
                             next[1]++;
                             p1.specialcoincount[5]++;
                             turn[0] = false;
+                            ShowTurn(turn , currentTurn);
                         }
                     }
                     if (e.getSource() == lev2Res1) {
@@ -2104,6 +2096,7 @@ public class Card {
                             next[2]++;
                             p1.specialcoincount[5]++;
                             turn[0] = false;
+                            ShowTurn(turn , currentTurn);
                         }
                     }
                     if (e.getSource() == lev2Res2) {
@@ -2117,6 +2110,7 @@ public class Card {
                             next[2]++;
                             p1.specialcoincount[5]++;
                             turn[0] = false;
+                            ShowTurn(turn , currentTurn);
                         }
                     }
                     if (e.getSource() == lev2Res3) {
@@ -2130,6 +2124,7 @@ public class Card {
                             next[2]++;
                             p1.specialcoincount[5]++;
                             turn[0] = false;
+                            ShowTurn(turn , currentTurn);
                         }
                     }
                     if (e.getSource() == lev2Res4) {
@@ -2143,6 +2138,7 @@ public class Card {
                             next[2]++;
                             p1.specialcoincount[5]++;
                             turn[0] = false;
+                            ShowTurn(turn , currentTurn);
                         }
                     }
                     if (e.getSource() == lev3Res1) {
@@ -2156,6 +2152,7 @@ public class Card {
                             next[3]++;
                             p1.specialcoincount[5]++;
                             turn[0] = false;
+                            ShowTurn(turn , currentTurn);
                         }
                     }
                     if (e.getSource() == lev3Res2) {
@@ -2169,6 +2166,7 @@ public class Card {
                             next[3]++;
                             p1.specialcoincount[5]++;
                             turn[0] = false;
+                            ShowTurn(turn , currentTurn);
                         }
                     }
                     if (e.getSource() == lev3Res3) {
@@ -2182,6 +2180,7 @@ public class Card {
                             next[3]++;
                             p1.specialcoincount[5]++;
                             turn[0] = false;
+                            ShowTurn(turn , currentTurn);
                         }
                     }
                     if (e.getSource() == lev3Res4) {
@@ -2195,8 +2194,10 @@ public class Card {
                             next[3]++;
                             p1.specialcoincount[5]++;
                             turn[0] = false;
+                            ShowTurn(turn , currentTurn);
                         }
                     }
+
                 } else if (!turn[0]) {
                     if (e.getSource() == lev1Res1) {
                         if (p2.checkReserve() == -1) {
@@ -2209,6 +2210,7 @@ public class Card {
                             next[1]++;
                             p2.specialcoincount[5]++;
                             turn[0] = true;
+                            ShowTurn(turn , currentTurn);
                         }
                     }
                     if (e.getSource() == lev1Res2) {
@@ -2222,6 +2224,7 @@ public class Card {
                             next[1]++;
                             p2.specialcoincount[5]++;
                             turn[0] = true;
+                            ShowTurn(turn , currentTurn);
                         }
                     }
                     if (e.getSource() == lev1Res3) {
@@ -2235,6 +2238,7 @@ public class Card {
                             next[1]++;
                             p2.specialcoincount[5]++;
                             turn[0] = true;
+                            ShowTurn(turn , currentTurn);
                         }
                     }
                     if (e.getSource() == lev1Res4) {
@@ -2248,6 +2252,7 @@ public class Card {
                             next[1]++;
                             p2.specialcoincount[5]++;
                             turn[0] = true;
+                            ShowTurn(turn , currentTurn);
                         }
                     }
                     if (e.getSource() == lev2Res1) {
@@ -2261,6 +2266,7 @@ public class Card {
                             next[2]++;
                             p2.specialcoincount[5]++;
                             turn[0] = true;
+                            ShowTurn(turn , currentTurn);
                         }
                     }
                     if (e.getSource() == lev2Res2) {
@@ -2274,6 +2280,7 @@ public class Card {
                             next[2]++;
                             p2.specialcoincount[5]++;
                             turn[0] = true;
+                            ShowTurn(turn , currentTurn);
                         }
                     }
                     if (e.getSource() == lev2Res3) {
@@ -2287,6 +2294,7 @@ public class Card {
                             next[2]++;
                             p2.specialcoincount[5]++;
                             turn[0] = true;
+                            ShowTurn(turn , currentTurn);
                         }
                     }
                     if (e.getSource() == lev2Res4) {
@@ -2300,6 +2308,8 @@ public class Card {
                             next[2]++;
                             p2.specialcoincount[5]++;
                             turn[0] = true;
+                            ShowTurn(turn , currentTurn);
+
                         }
                     }
                     if (e.getSource() == lev3Res1) {
@@ -2313,6 +2323,7 @@ public class Card {
                             next[3]++;
                             p2.specialcoincount[5]++;
                             turn[0] = true;
+                            ShowTurn(turn , currentTurn);
                         }
                     }
                     if (e.getSource() == lev3Res2) {
@@ -2326,6 +2337,7 @@ public class Card {
                             next[3]++;
                             p2.specialcoincount[5]++;
                             turn[0] = true;
+                            ShowTurn(turn , currentTurn);
                         }
                     }
                     if (e.getSource() == lev3Res3) {
@@ -2339,6 +2351,7 @@ public class Card {
                             next[3]++;
                             p2.specialcoincount[5]++;
                             turn[0] = true;
+                            ShowTurn(turn , currentTurn);
                         }
                     }
                     if (e.getSource() == lev3Res4) {
@@ -2352,6 +2365,7 @@ public class Card {
                             next[3]++;
                             p2.specialcoincount[5]++;
                             turn[0] = true;
+                            ShowTurn(turn , currentTurn);
                         }
                     }
                 }
@@ -2374,10 +2388,6 @@ public class Card {
     }
 
     public static void SetFalse() {
-        clawbutton1.setEnabled(false);
-        clawbutton2.setEnabled(false);
-        clawbutton3.setEnabled(false);
-
         lev1button1.setEnabled(false);
         lev1button2.setEnabled(false);
         lev1button3.setEnabled(false);
@@ -2411,10 +2421,6 @@ public class Card {
     }
 
     public static void SetTrue() {
-        clawbutton1.setEnabled(true);
-        clawbutton2.setEnabled(true);
-        clawbutton3.setEnabled(true);
-
         lev1button1.setEnabled(true);
         lev1button2.setEnabled(true);
         lev1button3.setEnabled(true);
@@ -2458,7 +2464,7 @@ public class Card {
             if (sw) {
                 p1.point += card.getPoint();
                 cellPanel.remove(claw1);
-                cellPanel.remove(clawbutton1);
+                showMessageDialog(null , "Congrats you have won a prize card with " + card.point + " point");
             }
 
     }
@@ -2474,7 +2480,7 @@ public class Card {
         if (sw) {
             p1.point += card.getPoint();
             cellPanel.remove(claw2);
-            cellPanel.remove(clawbutton2);
+            showMessageDialog(null , "Congrats you have won a prize card with " + card.point + " point");
         }
 
     }
@@ -2490,7 +2496,7 @@ public class Card {
         if (sw) {
             p1.point += card.getPoint();
             cellPanel.remove(claw3);
-            cellPanel.remove(clawbutton3);
+            showMessageDialog(null , "Congrats you have won a prize card with " + card.point + " point");
         }
 
     }

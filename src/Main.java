@@ -2,10 +2,13 @@ import cardcoin.Card;
 import playerslot.Player;
 import playerslot.SlotMachine;
 
+import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 
 import static cardcoin.Card.*;
@@ -15,13 +18,18 @@ import static playerslot.Player.*;
 public class Main  {
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws UnsupportedAudioFileException , IOException , LineUnavailableException {
         JFrame frame = new JFrame();
         frame.setSize(1400, 800);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         ImageIcon titleiImage = new ImageIcon("Ap2.png");
 
-
+        File file = new File("Sakura-Girl-Daisy-chosic.com_.wav");
+        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(file);
+        Clip clip = AudioSystem.getClip();
+        clip.open(audioInputStream);
+        clip.loop(Clip.LOOP_CONTINUOUSLY);
+        clip.start();
         frame.setTitle("Amusement Park");
         frame.setLayout(new BorderLayout());
         frame.setLocationRelativeTo(null);
@@ -205,21 +213,7 @@ public class Main  {
         JToggleButton P2draw2 = new JToggleButton("draw 2", false);
         P2draw2.setBounds(170, 10, 80, 30);
 
-        //clawbutton1.setFocusable(false);
-        /*clawbutton2.setFocusable(false);
-        clawbutton3.setFocusable(false);
-        lev1button1.setFocusable(false);
-        lev1button2.setFocusable(false);
-        lev1button3.setFocusable(false);
-        lev1button4.setFocusable(false);
-        lev2button1.setFocusable(false);
-        lev2button2.setFocusable(false);
-        lev2button3.setFocusable(false);
-        lev2button4.setFocusable(false);
-        lev3button1.setFocusable(false);
-        lev3button2.setFocusable(false);
-        lev3button3.setFocusable(false);
-        lev3button4.setFocusable(false);*/
+
 
 
         button1.setText(red.count + "/4");
@@ -242,16 +236,6 @@ public class Main  {
         P2panel.add(P2Res1);
         P2panel.add(P2Res2);
         P2panel.add(P2Res3);
-        player1.coincount[0] = 140;
-        player1.coincount[1] = 140;
-        player1.coincount[2] = 140;
-        player1.coincount[3] = 140;
-        player1.coincount[4] = 140;
-        player1.specialcoincount[0] = 4;
-        player1.specialcoincount[1] = 4;
-        player1.specialcoincount[2] = 4;
-        player1.specialcoincount[3] = 4;
-        player1.specialcoincount[4] = 4;
         P1draw2.setBackground(Color.RED);
         tablepanel.add(P1draw2, BorderLayout.SOUTH);
         tablepanel.add(P2draw2);
@@ -263,7 +247,7 @@ public class Main  {
             @Override
             public void actionPerformed(ActionEvent e) {
                 boolean check = false;
-                if (playerturn[0]) {
+                if (playerturn[0] && player1.calcutecoincount() <= 10) {
                     if (P1draw2.isSelected() == false) {
                         SetFalse();
                         P1draw2.setEnabled(false);
@@ -351,7 +335,7 @@ public class Main  {
                     setplayertext(P1label, player1, 1);
                     ShowTurn(playerturn , CurrentTurn);
                 }
-                else if (!playerturn[0]) {
+                else if (!playerturn[0] && player2.calcutecoincount() <= 10) {
                     if (P2draw2.isSelected() == false) {
 
                         P2draw2.setEnabled(false);
@@ -443,7 +427,7 @@ public class Main  {
         int[] addslot;
         addslot = new int[5];
         BuyCards(player1, player2, playerturn, cards, P1label, Next, green, red, blue, black, white, button0, button1, button2, button3, button4 , frame);
-        ReserveCards(player1, player2, playerturn, cards, P1label ,P2label , Next);
+        ReserveCards(player1, player2, playerturn, cards, P1label ,P2label , Next , CurrentTurn);
 
         ActionListener BuyReserveCards = new ActionListener() {
             @Override
@@ -494,6 +478,7 @@ public class Main  {
 
                 }
             setplayertext(P1label, player1, 1);
+                ShowTurn(playerturn , CurrentTurn);
             }
         };
 
@@ -510,7 +495,7 @@ public class Main  {
         P1draw2.addActionListener(slotlistener);
 
         frame.setVisible(true);
-        checkwinner(player1 , player2 , frame);
+
     }
 
 }
